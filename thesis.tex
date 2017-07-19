@@ -1,0 +1,136 @@
+\documentclass{report}
+\usepackage{natbib}
+\usepackage{graphicx}
+\usepackage{suthesis-2e}
+\input{preamble.tex}
+
+\title{Interactive Visualization and Probabilistic Models for the Microbiome}
+\author{Kris Sankaran}
+\dept{Statistics}
+
+\begin{document}
+\maketitle
+
+\chapter{Multitable Methods and Microbiome Data Integration}
+
+\section{Classical multivariate statistics}
+
+\subsection{PCA}
+
+\subsection{CCA}
+\label{sec:cca}
+
+\subsection{Co-Inertia Analysis}
+
+\subsection{MFA}
+\label{sec:mfa}
+
+\subsection{PCA-IV}
+
+\subsection{Partial Triadic Analysis}
+
+\subsection{Statico and Costatis}
+
+\subsection{Reduced-rank regression}
+\label{sec:rr-reg}
+
+\section{Modern multivariate methods}
+
+\subsection{PLS}
+\label{sec:PLS}
+
+\subsection{CCpnA}
+\label{sec:canonical-correspondence}
+
+\subsection{Curds \& Whey (C\&W)}
+\label{sec:cw}
+
+\section{Methods from machine learning}
+
+\subsection{Kernel Canonical Correlation Analysis (KCCA)}
+
+\subsection{Penalized Matrix Decomposition}
+
+\subsection{Covariate-assisted Spectral Clustering}
+
+\subsection{Multitask learning}
+\label{sec:multitask}
+
+\subsubsection{Bayesian multitask learning}
+
+\subsubsection{$\ell^{2, 1}$ Multitask learning}
+
+\subsubsection{Graph-based Multitask Learning}
+
+\subsection{Matrix Factorization}
+
+\chapter{Interactive Visualization of Microbial Counts}
+
+\section{Visualization principles}
+
+\subsection{Focus + Context}
+
+\subsection{Linking}
+
+\section{Design of the \texttt{treelapse} package}
+
+\section{\texttt{treelapse} case studies}
+
+\subsection{Antibiotics}
+
+\subsection{Preterm birth}
+
+\subsection{Bikesharing}
+
+\section{Design of the \texttt{hclustvis} package}
+
+\section{\texttt{hclustvis} case studies}
+
+\chapter{Mixed-membership Models for Microbiome Time Courses}
+
+\section{Problem description}
+
+\section{Available methods}
+
+\subsection{Latent Dirichlet Allocation}
+
+\subsection{Dynamic unigram and Topic Models}
+
+\subsection{Nonnegative Matrix Factorization}
+
+\section{Simulations}
+
+\section{Case study}
+
+\chapter{Inference of Dynamic Regimes in the Microbiome}
+
+\section{Problem description}
+
+\section{Methods comparison}
+
+\subsection{Hierarchical Clustering}
+
+\subsection{Recursive partitioning}
+
+\subsection{Hidden Markov Modeling}
+
+\subsubsection{EM for HMMs}
+
+\subsubsection{Sticky HMMs}
+
+\subsubsection{Sticky HDP-HMMs}
+
+\subsection{Linear Dynamical Systems}
+
+\subsection{Mixture of Experts}
+
+\subsection{Changepoint detection}
+
+\subsection{Accounting for zero inflation}
+
+\chapter{Conclusion}
+
+\bibliographystyle{plainnat}
+\bibliography{refs.bib}
+
+\end{document}
