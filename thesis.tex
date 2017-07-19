@@ -128,6 +128,8 @@ Using innovations
 Using jaccard distance
 Combining distances
 
+General question: How to choose between these distances?
+
 Interpretation
 - ordinary averages within components
 - proportions nonzero
@@ -136,10 +138,13 @@ Interpretation
 
 - Variation on hierarchical clustering, to provide temporal structure
 - Brief description of recursive partitioning
+- Application to the antibiotics data: provide heatmap and interpretation, at
+several levels of complexity.
 
 \subsection{Hidden Markov Modeling}
 
 - Probabilistic approach that incorporates time structure directly
+- Draw the graphical model
 
 \subsubsection{Standard HMMs}
 
@@ -154,8 +159,12 @@ probability matrix
 - Modified model
 - Simulation example
 - Antibiotics case study: Transition probabilities and heatmap. Interpretation
-of transition probabilities.
+of transition probabilities. Contrast with hierarchical clsutering and recursive
+partitioning
 - Review inferential procedure (block sampling)
+  + Link to code
+  + Algorithm psueodocode
+  + Derivation of some nonobvious steps
 
 \subsubsection{Sticky HDP-HMMs}
 
@@ -163,15 +172,22 @@ of transition probabilities.
 - Simulation example
 - Antibiotics case study
 - Review inferential procedures (direct assignment and block sampling)
+  + Algorithm psueodocode
+  + Derivation of some nonobvious steps
+  + Link to code
 
 \subsection{Linear Dynamical Systems and Gaussian Processes}
 
 - Review LDS graphical model
 - Review GP graphical model
 - Basic distinctions between these
-
 - Derivation of Kalman Filter / Smoother
+  + Kalman filtering pseudocode
+  + Kalman smoothing pseudocode
+  + Link to some actual code
 - Description of GP posterior
+  + GP pseudocode
+  + Link to some actual code
 
 \subsection{Mixture of Experts}
 
@@ -187,7 +203,10 @@ of transition probabilities.
 \subsection{Changepoint detection}
 
 - Description of the model
-- Provide row and column updates
+- Summary of the empirical bayes idea
+- Summary of dynamic programming, and provide row and column updates
+  + Maybe provide actual pseudocode?
+- Would be nice to include a simulation / application to antibiotics
 
 \subsection{Accounting for zero inflation}
 
