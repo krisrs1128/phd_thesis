@@ -84,6 +84,12 @@
 
 \section{Design of the \texttt{hclustvis} package}
 
+Reading a panel
+- heatmap, tree, centroids
+- time series -> faceting
+- breakdown across taxonomies in bottom right
+- compare clusters side by side
+
 \section{\texttt{hclustvis} case studies}
 
 \chapter{Mixed-membership Models for Microbiome Time Courses}
@@ -110,23 +116,84 @@
 
 \subsection{Hierarchical Clustering}
 
+- Limitations, advantages
+- Interpretation of centroids
+- Choices: transformation, distances
+
+- Review of hierarchical clustering
+
+- Distances
+Using euclidean distance
+Using innovations
+Using jaccard distance
+Combining distances
+
+Interpretation
+- ordinary averages within components
+- proportions nonzero
+
 \subsection{Recursive partitioning}
+
+- Variation on hierarchical clustering, to provide temporal structure
+- Brief description of recursive partitioning
 
 \subsection{Hidden Markov Modeling}
 
-\subsubsection{EM for HMMs}
+- Probabilistic approach that incorporates time structure directly
+
+\subsubsection{Standard HMMs}
+
+- Write the model and provide an interpretation
+- Application to antibiotics: heatmap, interpretation, and transition
+probability matrix
+- In order to understand extensions, briefly review actual inferential mechanism
+- What kinds of limitations have we encountered?
 
 \subsubsection{Sticky HMMs}
 
+- Modified model
+- Simulation example
+- Antibiotics case study: Transition probabilities and heatmap. Interpretation
+of transition probabilities.
+- Review inferential procedure (block sampling)
+
 \subsubsection{Sticky HDP-HMMs}
 
-\subsection{Linear Dynamical Systems}
+- Write the new model
+- Simulation example
+- Antibiotics case study
+- Review inferential procedures (direct assignment and block sampling)
+
+\subsection{Linear Dynamical Systems and Gaussian Processes}
+
+- Review LDS graphical model
+- Review GP graphical model
+- Basic distinctions between these
+
+- Derivation of Kalman Filter / Smoother
+- Description of GP posterior
 
 \subsection{Mixture of Experts}
 
+- Switching state space models
+   + Model description
+   + Simulation example
+   + Description of variational inference
+- Mixture of Gaussian processes
+  + Model description
+  + Simulation examples
+  + Description of variational inference
+
 \subsection{Changepoint detection}
 
+- Description of the model
+- Provide row and column updates
+
 \subsection{Accounting for zero inflation}
+
+- The dynamic tobit model
+  + Brief summary of Glasby Nevison
+  + Explanation and simulation using the scan sampler
 
 \chapter{Conclusion}
 
