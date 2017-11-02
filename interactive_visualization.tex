@@ -980,6 +980,130 @@ significant nodes is only clear upon visualization on the tree.
 
 \section{mvarVis}
 
+mvarVis is an R package for visualization of diverse multivariate analysis
+methods. We implement two new tools to facilitate analyses that are cumbersome
+with existing software. The first uses htmlwidgets and D3 to create interactive
+ordination plots, while the second makes it easy to bootstrap multivariate
+methods and align the resulting scores. These interactive visualizations offer an
+alternative to printing multiple plots with different supplementary information
+overlaid, and bootstrapping enables qualitative assessment of the uncertainty
+underlying the application of exploratory multivariate methods on particular
+data sets.
+
+Our approach is to leverage existing packages -- FactoMineR, ade4, and vegan
+\citep{le2008factominer, dray2007ade4, oksanen2007vegan} -- to perform the
+actual dimension reduction, and build a new layer for visualizing and
+bootstrapping their results. This allows our tools to wrap a variety of existing
+methods, including one table, multitable, and distance-based approaches --
+principal components, multiple factor analysis, and multidimensional scaling,
+for example. Since our package uses htmlwidgets, it is possible to embed our
+interactive plots in Rmarkdown pages and Shiny apps
+\citep{vaidyanathan2014htmlwidgets}. All code and many examples are available on
+our github page: \url{https://github.com/krisrs1128/mvarVis}.
+
+\subsection{Motivation}
+
+The analysis of complex data sets often requires a dimensionality reduction
+step. Common methods for dimensionality reduction or feature extraction are
+principal component analysis (PCA), canonical correlation analysis (CCA),
+nonlinear multidimensional scaling (NMDS). While there are a number of R
+packages for multivariate analysis, they often have a steep learning curve and
+rarely share common code conventions. Further, data input and output formats
+oftne vary largely from one package to the other. Finally, most packages
+generate static results, an unnecessary limitation, in light of increasingly
+accessible interactive visualization tools in the data analysis community.
+
+mvarVis unifies different ways of performing multivariate analysis and
+facilitates the process of generating visualizations. It is build on top of the
+existing statistical packages, but adds a a layer of interactivity to the
+resulting visualizations. With mvarVis, the user can easily add and display
+supplemental information. Additionally, the package incorporates a bootstrapping
+tool for resampling the input data. Bootstrapping is used to assess the
+stability of the results of the analysis. The uncertainty of the dimensionality
+reduction techniques can be estimated for example by inspecting the ordination
+plots with bootstrapped samples.
+
+\subsection{Principles}
+
+The design of mvarVis reflects a few guiding principles,
+\begin{itemize}
+\item Identify ways to ease interpretation of existing implementations of
+  multivariate analysis methods, but avoid developing new implementations or
+  methods.
+\item Leverage interactivity to facilitate users' navigation through alternative
+  dimension reduction views.
+\item Put checks in place to ensure correct conclusions are drawn from analysis
+  results.
+\end{itemize}
+
+We detail these points below. The first point motivates links between mvarVis
+and implementations in FactoMineR, ade4, and vegan. Our approach modularizes the
+task into (1) converting the output from these packages to a consistent S4 class
+and (2) creating visualization and interpretation tools that operate on this
+class. By separating the implementation in this way, it is easy to extend
+mvarVis on both fronts without risking incompatibilities elsewhere.
+
+The second point was motivated by the observation that, in practice, to
+understand multivariate analysis results, it is often necessary to iterate
+across many types of supplemental information in order to characterize latent
+dimensions. For example, when viewing the output of a PCA, it is common to color
+points by many different variables which were not used in producing the
+dimension reduction. By making this process interactive, we hope to help viewers
+find meaningful patterns with less effort.
+
+Finally, we take responsibility for correct interpretation of the displays
+produced by mvarVis. One first check is to fix coordinate axis scalings to
+reflect the proportion of variance explained by each axis
+\citep{fukuyama2017multidomain}. Second, we provide methods for bootstrapping
+results to assess ordination uncertainty -- points with wide contours should be
+interpreted with caution \citep{efron1992bootstrap}.
+
+\subsection{Implementation}
+
+mvarVis uses an S4 class, which we call an mvarLayer, as a fundamental building
+block unifying output from other ordination packages. Each layer is composed of
+coordinates of projected points along with supplemental information describing
+it.
+
+Different tables, or types of coordinates, become different layers. The
+interactive displays are created using D3, with communication between D3 and R
+enabled by the htmlwidgets package \citep{vaidyanathan2014htmlwidgets}.
+
+\subsection{Bootstrap}
+
+In many application it is of interest to assess the degree of stability in the
+lower-dimensional representations of the data. The uncertainty in the
+coordinates of the data points in the reduced space can be estimated in some
+cases where the input data are counts or proportions, e.g. community composition
+or gene expression data. For examlpe, this can be done by,
+\begin{itemize}
+\item Bootstrapping the input data matrix.
+\item Applying the multivariate analysis to each of the bootstrapped samples.
+\item Plotting all bootstrapped points together in the reduced space.
+\end{itemize}
+In mvarVis performing the bootstrap procedure is easy. All steps are done
+automatically with a call to the \texttt{bootstrap\_ordination()} function.
+
+\subsection{Examples}
+
+Figure 1. An example of the \texttt{plot\_mvar\_d3()} function, using the wine
+dataset in FactoMineR. Hovering over points displays additional information
+about it, and alternative supplemental information can be displayed through the
+dropdown menu.
+
+Figure 2. Bootstrap Principal Coordinate Analysis with Morisita distance.
+Ordination plots are frequently generated in the microbiome studies. Here we
+show an example of bootstrap PCoA using Morisita distance on the subset of Human
+Microbiome Project dataset \citep{human2012structure}.
+
+\subsection{Discussion and Future Work}
+
+We believe the mvarVis package can streamline the ordination workflow, by
+providing simple interpretation aids that can be applied to a variety of
+existing multivariate analysis methods. In future work, we hope to pursue
+interactive visualization of bootstrap results. We are also considering links
+with other multivariate analysis implementations in R.
+
 \section{hclustvis}
 
 \subsection{Design}
