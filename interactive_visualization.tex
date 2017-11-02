@@ -1001,7 +1001,7 @@ interactive plots in Rmarkdown pages and Shiny apps
 \citep{vaidyanathan2014htmlwidgets}. All code and many examples are available on
 our github page: \url{https://github.com/krisrs1128/mvarVis}.
 
-\subsection{Motivation}
+\subsection{Problem Motivation}
 
 The analysis of complex data sets often requires a dimensionality reduction
 step. Common methods for dimensionality reduction or feature extraction are
@@ -1107,54 +1107,64 @@ or text label, since different types of plots often conventionally use different
 displays -- for example, in \citep{dray2007ade4}, scores are usually given as
 points, while loadings are given as arrows and labeled text.
 
-\subsection{Bootstrap}
-
-In many application it is of interest to assess the degree of stability in the
-lower-dimensional representations of the data. The uncertainty in the
-coordinates of the data points in the reduced space can be estimated in some
-cases where the input data are counts or proportions, e.g. community composition
-or gene expression data. For examlpe, this can be done by,
-\begin{itemize}
-\item Bootstrapping the input data matrix.
-\item Applying the multivariate analysis to each of the bootstrapped samples.
-\item Plotting all bootstrapped points together in the reduced space.
-\end{itemize}
-In mvarVis, performing the bootstrap procedure is easy. All steps are done
-automatically with a call to the \texttt{bootstrap\_ordination()} function.
+Further, in many application it is of interest to assess the degree of stability
+in the lower-dimensional representations of the data. The uncertainty in the
+coordinates of the data points in the reduced space can be estimated by a
+bootstrap \citep{daudin1988stability, chakerian2012computational}. Specifically,
+in our implementation, we perform the following three steps,
+\begin{enumerate}
+\item Resample the input data matrix.
+\item Apply a multivariate analysis method to each of the bootstrapped samples.
+\item Plot bootstrapped points together in the reduced space.
+\end{enumerate}
+All steps are done automatically with a call to the
+\texttt{bootstrap\_ordination()} function.
 
 \subsection{Examples}
+
+Example output from mvarVis is given in Figures \ref{fig:wine_interactive} and
+\ref{fig:hmp_bootstrap}. Figure \ref{fig:wine_interaction} gives a screenshot of
+an interactive display to an \texttt{mvarTable}, using the pedagogical wine data
+set from \cite{le2008factominer}, which provides quantitative measurements from
+wine tasters about drinks -- acidity and sweetness, for example -- from
+different vineyards. The purpose of the data set is to identify characteristics
+of the wines that vary substantially across vineyard regions or drink types, a
+problem to which ordinary PCA is well suited. The loadings from this PCA is
+given in Figure \ref{fig:wine_interactive}, the associated scores are available
+on the mvarVis website.
 
 \begin{figure}[ht]
   \centering
   \includegraphics[width=\textwidth]{figure/treelapse/wine_interactive}
-  \caption{
-    An example of the \texttt{plot\_mvar\_d3()} function, using the wine
+  \caption{ An example of the \texttt{plot\_mvar\_d3()} function, using the wine
     dataset in FactoMineR. Hovering over points displays additional information
-    about it, and alternative supplemental information can be displayed through the
-    dropdown menu.
+    about it, and alternative supplemental information can be displayed through
+    the dropdown menu.
     \label{fig:wine_interactive}
   }
 \end{figure}
+
+Figure \ref{fig:hmp_bootstrap} gives example bootstrap ordination results on a
+real microbiome data set. By applying this procedure, it becomes clear that the
+positions of the skin samples are more variable than those for, say, the gut or
+urogenital tract. This may be a result of differential sequence depths (or true
+bacterial population levels) across different types of sites. Note that without
+the bootstrapping step, this effect would not be clear.
 
 \begin{figure}[ht]
   \centering
   \includegraphics[width=\textwidth]{figure/treelapse/hmp_bootstrap}
   \caption{
-    Bootstrap Principal Coordinate Analysis with Morisita distance.
-    Ordination plots are frequently generated in the microbiome studies. Here we
-    show an example of bootstrap PCoA using Morisita distance on the subset of Human
-    Microbiome Project dataset \citep{human2012structure}.
+    Bootstrap Principal Coordinate Analysis with Morisita distance. Here we show
+    an example of bootstrap PCoA using Morisita distance on the subset of Human
+    Microbiome Project dataset \citep{human2012structure}. Outlined points
+    represent the consensus positions across bootstrap replicates, and are close
+    to one another then their microbiome abundance patterns are similar. The
+    three panels give different ways of displaying the bootstrap samples which
+    are provided by mvarVis: points, contours, and clouds.
     \label{fig:hmp_bootstrap}
   }
 \end{figure}
-
-\subsection{Discussion and Future Work}
-
-We believe the mvarVis package can streamline the ordination workflow, by
-providing simple interpretation aids that can be applied to a variety of
-existing multivariate analysis methods. In future work, we hope to pursue
-interactive visualization of bootstrap results. We are also considering links
-with other multivariate analysis implementations in R.
 
 \section{hclustvis}
 
