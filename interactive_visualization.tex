@@ -59,7 +59,7 @@ detail the visualization methods we have implemented in treelapse. We close with
 several case studies using publicly available data across both microbiome and
 non-microbiome related applications.
 
-\subsubsection{Problem Motivation}\label{problem-motivation}
+\subsection{Problem Motivation}\label{problem-motivation}
 
 A microbiome is a community of bacteria living in given environments, for
 example, ocean water or the human gut \citep{human2012structure, cho2012human}.
@@ -93,7 +93,7 @@ gradual environmental changes or how species fill, drop out from, or compete for
 environmental niches. Medically, these questions are important for illuminating
 the impact of antibiotic time courses or diet changes, for example.
 
-\subsubsection{Problem Abstraction}\label{problem-abstraction}
+\subsection{Problem Abstraction}\label{problem-abstraction}
 
 To unify the tree-structured differential abundance and bacterial dynamics
 problems, we identify the data with a collection of random variables indexed by
@@ -144,8 +144,8 @@ coordinates challenges remain, mainly selecting scales for and ordering
 across the different coordinates, but the linking and focus-plus-context
 can still be employed this setting.
 
-\subsubsection{Background Literature and Solution
-Principles}\label{background-literature-and-solution-principles}
+\subsection{Background Literature and Solution Principles}
+\label{background-literature-and-solution-principles}
 
 Now that we have specified the essential questions of interest, we survey some
 ideas from the visualization literature that can be applied to answer them. As
@@ -220,7 +220,7 @@ providing a toolbox for generic types of visualization design. We believe that
 this narrow context within a broad ecosystem strikes a balance between
 problem-specificity and ease-of-use.
 
-\subsubsection{Specific Proposals}\label{specific-proposals}
+\subsection{Specific Proposals}\label{specific-proposals}
 
 Our first proposed visualization technique is a minor modification of the DOI
 tree. The standard DOI tree definition does not have any notion of data defined
@@ -1062,12 +1062,50 @@ interpreted with caution \citep{efron1992bootstrap}.
 
 mvarVis uses an S4 class, which we call an mvarLayer, as a fundamental building
 block unifying output from other ordination packages. Each layer is composed of
-coordinates of projected points along with supplemental information describing
-it.
+coordinates of projected points (a \texttt{coord} field) along with supplemental
+information describing it (an \texttt{annotation} field). Different tables, or
+types of coordinates, become different layers. For example, scores and loadings
+in PCA are placed into separate layers. Or, in CCA, the two sets of scores
+associated with each table might each be given a layer. By explicitly separating
+types of points into layers, it becomes easy to customize attributes on a layer
+by layer basis. This is a departure from traditional visualization packages --
+for example, in ggplot2, the addition of a color scale to a plot modifies the
+colors across all of the plot's components \citep{wickham2010ggplot2}.
 
-Different tables, or types of coordinates, become different layers. The
-interactive displays are created using D3, with communication between D3 and R
-enabled by the htmlwidgets package \citep{vaidyanathan2014htmlwidgets}.
+This S4 class system also facilitates cross-talk across multivariate analysis
+packages, by abstracting the mvarLayer information required for visualizations.
+This makes it straightforwards to define a \texttt{convert\_to\_mvar()} utility
+that converts the output from FactoMineR, ade4, and vegan into
+\texttt{mvarTable}s. We have also provided a wrapper function,
+\texttt{ordi\_wrapper()}, that wraps some of the most common functions in these
+packages and then internally calls \texttt{convert\_to\_mvar()}. The currently
+supported methods include,
+\begin{itemize}
+\item FactoMineR: Principal Components Analysis, Correspondence Analysis,
+  Multiple Correspondence Analysis, Multiple Factor Anaysis, Dual Multiple
+  Factor Anaysis, Hierarchical Multiple Factor Analysis, Factor Analysis of
+  Mixed Data
+\item ade4: Principal Components Analysis, Canonical Correlation Analysis,
+  Procrustes Rotation, Correspondence Analysis, Multiple Correspondence
+  Analysis, Fuzzy Correspondence Analysis, Nonsymmetric Correspondence Analysis,
+  Fuzzy Principal Components Analysis, ``Hill-Smith'' Mixed-Type analysis
+  \citep{hill1976principal}
+\item vegan: Isomap, Detrended Correspondence Analysis, Constrained
+  Correspondence Analysis, Principal Coordinates Analysis, Double Principle
+  Coordinates Analysis, Nonmetric Multidimensional Scaling, Canonical
+  Correlation Analysis
+\end{itemize}
+
+The interactive displays are created using D3, with communication between D3 and
+R enabled by the htmlwidgets package \citep{vaidyanathan2014htmlwidgets}.
+Hovering over points displays the raw data entry associated with them, an
+instance of the same linking principle used in treelapse, and a control panel
+allows customization of properties of the displayed points. In particular, the
+color and size attributes can be made to reflect different fields in the
+original data. Further, each point can be represented by either a circle, arrow,
+or text label, since different types of plots often conventionally use different
+displays -- for example, in \citep{dray2007ade4}, scores are usually given as
+points, while loadings are given as arrows and labeled text.
 
 \subsection{Bootstrap}
 
@@ -1081,20 +1119,34 @@ or gene expression data. For examlpe, this can be done by,
 \item Applying the multivariate analysis to each of the bootstrapped samples.
 \item Plotting all bootstrapped points together in the reduced space.
 \end{itemize}
-In mvarVis performing the bootstrap procedure is easy. All steps are done
+In mvarVis, performing the bootstrap procedure is easy. All steps are done
 automatically with a call to the \texttt{bootstrap\_ordination()} function.
 
 \subsection{Examples}
 
-Figure 1. An example of the \texttt{plot\_mvar\_d3()} function, using the wine
-dataset in FactoMineR. Hovering over points displays additional information
-about it, and alternative supplemental information can be displayed through the
-dropdown menu.
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{figure/treelapse/wine_interactive}
+  \caption{
+    An example of the \texttt{plot\_mvar\_d3()} function, using the wine
+    dataset in FactoMineR. Hovering over points displays additional information
+    about it, and alternative supplemental information can be displayed through the
+    dropdown menu.
+    \label{fig:wine_interactive}
+  }
+\end{figure}
 
-Figure 2. Bootstrap Principal Coordinate Analysis with Morisita distance.
-Ordination plots are frequently generated in the microbiome studies. Here we
-show an example of bootstrap PCoA using Morisita distance on the subset of Human
-Microbiome Project dataset \citep{human2012structure}.
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{figure/treelapse/hmp_bootstrap}
+  \caption{
+    Bootstrap Principal Coordinate Analysis with Morisita distance.
+    Ordination plots are frequently generated in the microbiome studies. Here we
+    show an example of bootstrap PCoA using Morisita distance on the subset of Human
+    Microbiome Project dataset \citep{human2012structure}.
+    \label{fig:hmp_bootstrap}
+  }
+\end{figure}
 
 \subsection{Discussion and Future Work}
 
