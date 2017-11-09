@@ -38,6 +38,8 @@
 %~~~~~~~~~~~~~~~
 \renewcommand{\exp}[1]{\operatorname{exp}\left(#1\right)} % Exponential
 \def\indic#1{\mbb{I}\left({#1}\right)} % Indicator function
+\providecommand{\maximize}{\mathop\mathrm{maximize}} % Defining math symbols
+\providecommand{\minimize}{\mathop\mathrm{minimize}}
 \providecommand{\argmax}{\mathop\mathrm{arg max}} % Defining math symbols
 \providecommand{\argmin}{\mathop\mathrm{arg min}}
 \providecommand{\arccos}{\mathop\mathrm{arccos}}
@@ -61,8 +63,10 @@
 \def\Parg#1{\P\left({#1}\right)}
 \def\Psubarg#1#2{\P_{#1}\left[{#2}\right]}
 \def\Cov{\mrm{Cov}} % Covariance symbol
+\def\Corr{\mrm{Corr}} % Covariance symbol
 \def\Covarg#1{\Cov\left[{#1}\right]}
 \def\Covsubarg#1#2{\Cov_{#1}\left[{#2}\right]}
+\def\Corrsubarg#1#2{\Corr_{#1}\left[{#2}\right]}
 \def\Var{\mrm{Var}}
 \def\Vararg#1{\Var\left(#1\right)}
 \def\Varsubarg#1#2{\Var_{#1}\left(#2\right)}
@@ -91,6 +95,7 @@
 \def\GEM{\textnormal{GEM}}
 \def\BP{\textnormal{BP}}
 \def\DP{\textnormal{DP}}
+\def\CRP{\textnormal{CRP}}
 \def\BeP{\textnormal{BeP}}
 %~~~~~~~~~~~~~~~
 % Theorem-like environments
@@ -115,3 +120,5 @@
 \newcommand{\toprob}{\xrightarrow{\mathbb{P}}}
 \newcommand{\laweq}{\overset{\mathcal{L}}{=}}
 \newcommand{\F}{\mathcal{F}}
+\newcommand\independent{\protect\mathpalette{\protect\independenT}{\perp}}
+\def\independenT#1#2{\mathrel{\rlap{$#1#2$}\mkern2mu{#1#2}}}
