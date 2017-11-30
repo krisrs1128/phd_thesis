@@ -1166,18 +1166,21 @@ the bootstrapping step, this effect would not be clear.
 \section{centroidview}
 
 Centroidview is an R package for interactive visualization of hierarchical
-clustering trees. It is designed to facilitate inspection of subtree
-centroids, a useful follow-up analysis of hierarchical clustering results, but
-which, in the absence of supplementary tools, can be complicated to implement
-and difficult to visually process. Indeed, after clustering a collection of
-samples, it is worthwhile to characterize resulting clusters, rather than
-stopping at the fact that certain samples were clustered together. The two most
-common approaches to this characterization step are
+clustering trees, available at \url{https://github.com/krisrs1128/centroidview}.
+It is designed to facilitate inspection of subtree centroids, a useful follow-up
+analysis of hierarchical clustering results, but which, in the absence of helper
+utilities, can be complicated to implement and difficult to visually process.
+That is, after clustering a collection of samples, it is often of interest to
+characterize each cluster, rather than stopping at the fact that certain samples
+were grouped together. The two most common approaches to this characterization
+step are
 \begin{itemize}
-\item Centroids: Average quantitative features within different clusters.
-  Similarly, look at cross-tabulations of categorical features across clusters.
-\item Heatmaps: Produce a heatmap of the raw data, with samples sorted according
-  to leaf positions in the hierarchical clustering.
+\item Centroids: We can use the average of quantitative features within
+  different clusters as a kind of signature. Similarly, we can look at
+  cross-tabulations of categorical features across clusters.
+\item Heatmaps: By producing heatmaps of the raw data, with samples sorted
+  according to leaf positions in the hierarchical clustering, structures between
+  certain clusters and variables may become visibile.
 \end{itemize}
 Each approach has its advantages and disadvantages. Studying centroids can be
 simpler than producing a full heatmap. It also avoids ambiguity of where
@@ -1206,12 +1209,25 @@ assess the sharpness of variation between neighboring nodes -- discontinuous
 jumps are markers of clear clustering while smoother change in centroid shapes
 suggests a gradient across samples.
 
+\begin{figure}
+  \centering
+  \includegraphics[width=\textwidth]{figure/treelapse/centroidveiw_linking}
+  \caption{
+    The most basic linking between the hierarchical clustering tree, a heatmap,
+    and the centroids. Each row is one species, each column is one sample. The
+    light regions in the heatmap correspond to drops in the time series. There
+    are two other, undisplayed panels corresponding to the last two thirds of
+    the heatmap columns.
+    \label{fig:centroidview_linking}
+  }
+\end{figure}
+
 Slight modifications to this display can enable more even sophisticated visual
 comparisons. First, it is often of interest to compare two or more clusters to
 one another. To this end, we allow the user to fix the view created by hovering
-over one node, then layer on new views associated with hovering over other
-nodes. This view can clarify which features are responsible for differences
-between subtrees.
+over one node, then layer on new views created by hovering over other nodes.
+This view can clarify which features are responsible for differences between
+subtrees.
 
 A second modification allows a comparison of samples based on supplementary
 features, which are not directly employed in the distanced used for clustering.
@@ -1222,7 +1238,24 @@ interesting to tabulate the number of samples within each subcluster with each
 property, looking for departures from independence. Visually, we can achieve
 this using a bar plot that response to mouse movement along the tree. Each bar
 is associated with one property, and the length of the bar is proportional to
-the number of the hovered-over node's descendants with that property.
+the number of the hovered-over node's descendants with that property. See Figure
+\ref{fig:centroidview_groups} for an example.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=\textwidth]{figure/treelapse/centroidview_groups}
+  \caption{
+    An example of our approach to counting the numbers of subtree samples with
+    different properties. Each sideways pair of bars corresponds to one
+    ``property'' -- a taxonomic assignment of the species. Each color
+    corresponds to one subtree of the hierarchical clustering. Evidenty, the
+    currently highlighted green subtree consists of more Lachnospiraceae, and
+    these are species which in one subject start at lower levels than those in
+    the orange subtree, and disappear after the first antibiotic time course.
+    \label{fig:centroidview_groups}
+  }
+\end{figure}
+
 
 \subsection{\texttt{centroidview} case studies}
 
@@ -1241,13 +1274,33 @@ in the data, with the ultimate goal of interpreting these trajectories in
 relation to theories of ecological dynamics.
 
 An example display from centroid view applied to this data is given in Figure
-\ref{fig:centroidview_antibiotic_overview}. Each row corresponds to one species,
-and each column is a sample. Samples are first grouped by person, then are
-sorted by time. The intensity of a cell in the heatmap reflects the abundance of
-that species in that sample. The hierarchical clustering tree is printed on the
-left. Subtree centroids are given in the panels along the top right, with one
-panel per subject and one line per subtree. Taxonomic breakdowns appear in the
-bottom right. Different colors distinguish different subtrees. 
+\ref{fig:centroidview_differential}. Evidently, the orange and green subtrees
+differentiate between species with differential responses to antibiotics in the
+first and third subjects. In particular, for the first subject, the green
+species are relatively unaffected by the second antibiotics, while the orange
+species are. On the other hand, the same green species in the third subject seem
+to recover to a lower level after the second antibiotics, while the orange
+species gradually recover to their original level. Further, the bar plot
+indicates that the the orange species consist of relatively more
+Lachnospiraceae, while the green subtree mostly contains Ruminococcaceae.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=\textwidth]{figure/treelapse/centroidview_differential}
+  \caption{
+    The complete centroidview display for the antibiotics data. Each row in the
+    heatmap corresponds to one species, and each column is a sample. Samples are
+    first grouped by person, then are sorted by time. The intensity of a cell in
+    the heatmap reflects the abundance of that species in that sample. The
+    hierarchical clustering tree is printed on the left. Subtree centroids are
+    given in the panels along the top right, with one panel per subject and one
+    line per subtree. Taxonomic breakdowns appear in the bottom right. Different
+    colors distinguish different subtrees.
+    \label{fig:centroidview_differential}
+  }
+\end{figure}
+
+
 
 \section{Conclusion and Future Work}\label{conclusion}
 
