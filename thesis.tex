@@ -1,9 +1,14 @@
 \documentclass{report}
 \usepackage{suthesis-2e}
 \usepackage{amsmath, amssymb, amsfonts}
-\usepackage{natbib}
 \usepackage{graphicx}
 \usepackage{hyperref}
+\usepackage{natbib}
+\usepackage{tikz}
+\usetikzlibrary{bayesnet}
+\usetikzlibrary{positioning}
+\usepackage{algorithm}
+\usepackage[noend]{algorithmic}
 \input{preamble.tex}
 
 \title{Discovery and Visualization of Latent Structure \\ in the Microbiome}
@@ -15,12 +20,17 @@
 \tableofcontents
 
 \chapter{Multitable Methods and Microbiome Data Integration}
+\include{multitable_methods}
 
 \chapter{Interactive Visualization of Microbial Counts}
-
 \include{interactive_visualization}
-\chapter{Mixed-membership Models for Microbiome Time Courses}
+
+\chapter{Latent Variables Models for the Microbiome}
+\include{text_analysis_latent}
+
 \chapter{Inference of Dynamic Regimes in the Microbiome}
+\include{dynamic_regimes}
+
 \chapter{Conclusion}
 
 \bibliographystyle{plainnat}
