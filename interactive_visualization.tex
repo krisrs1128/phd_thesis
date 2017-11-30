@@ -1,20 +1,17 @@
 We introduce methods for visualization of data structured along trees,
-especially hierarchically structured collections of time series. To
-this end, we identify questions that often emerge when working with
-hierarchical data and provide an R package to simplify their
-investigation. Our key contribution is the adaptation of the
-visualization principles of focus-plus-context and linking to the
-study of tree-structured data.
+especially hierarchically structured collections of time series. To this end, we
+identify questions that often emerge when working with hierarchical data and
+provide an R package to simplify their investigation. Our key contribution is
+the adaptation of the visualization principles of focus-plus-context and linking
+to the study of tree-structured data.
 
-Our motivating application is to the analysis of bacterial time
-series, where an evolutionary tree relating bacteria is available a
-priori. However, we have identified common problem types where, if a
-tree is not directly available, it can be constructed from data and
-then studied using our techniques. We perform detailed case studies to
-describe the alternative use cases, interpretations, and utility of
-the proposed visualization methods.
+Our motivating application is to the analysis of bacterial time series, where an
+evolutionary tree relating bacteria is available a priori. However, we have
+identified common problem types where, if a tree is not directly available, it
+can be constructed from data and then studied using our techniques. We perform
+detailed case studies to describe the alternative use cases, interpretations,
+and utility of the proposed visualization methods.
 
-%% {\it Keywords:}  D3, focus-plus-context, linking, time-series, tree-structured, R
 
 \section{Treelapse}\label{introduction}
 
@@ -1166,17 +1163,144 @@ the bootstrapping step, this effect would not be clear.
   }
 \end{figure}
 
-\section{hclustvis}
+\section{centroidview}
 
-\subsection{Design}
+Centroidview is an R package for interactive visualization of hierarchical
+clustering trees, available at \url{https://github.com/krisrs1128/centroidview}.
+It is designed to facilitate inspection of subtree centroids, a useful follow-up
+analysis of hierarchical clustering results, but which, in the absence of helper
+utilities, can be complicated to implement and difficult to visually process.
+That is, after clustering a collection of samples, it is often of interest to
+characterize each cluster, rather than stopping at the fact that certain samples
+were grouped together. The two most common approaches to this characterization
+step are
+\begin{itemize}
+\item Centroids: We can use the average of quantitative features within
+  different clusters as a kind of signature. Similarly, we can look at
+  cross-tabulations of categorical features across clusters.
+\item Heatmaps: By producing heatmaps of the raw data, with samples sorted
+  according to leaf positions in the hierarchical clustering, structures between
+  certain clusters and variables may become visibile.
+\end{itemize}
+Each approach has its advantages and disadvantages. Studying centroids can be
+simpler than producing a full heatmap. It also avoids ambiguity of where
+clusters begin and end. It can also be more informative in the case that
+variables have a natural relation to one another, such as a time ordering. This
+is because making visual comparisons of feature values as time series or
+boxplots is more straightforward than differentiating color intensities across
+heatmap cells. On the other hand, heatmaps avoid the issue of having to identify
+the position at which to cut the hierarchical clustering tree. A related
+advantage is that there are no problems caused by highly imbalanced cluster
+sizes, which can complicate direct interpretation of centroids.
 
-Reading a panel
-- heatmap, tree, centroids
-- time series -> faceting
-- breakdown across taxonomies in bottom right
-- compare clusters side by side
+The main idea of centroidview is to blend these two approaches to inspecting
+hierarchical clustering trees. Specifically, we apply the linking principle to a
+combined view that includes the original hierarchical clustering tree, an
+associated heatmap, and a centroid display. Hovering over a node in the tree
+highlights the descendant samples in the heatmap. In the centroid display, a
+line graph is produced whose $x$-axis indexes features and whose $y$-axis gives
+the average value of the features among the samples descending from the
+hovered-over node.
 
-\subsection{\texttt{hclustvis} case studies}
+By interactively updating centroid summaries based on which nodes are hovered
+over, centroidview allows the user to quickly evaluate the behavior of clusters
+throughout the hierarchical clustering tree. Further, it becomes possible to
+assess the sharpness of variation between neighboring nodes -- discontinuous
+jumps are markers of clear clustering while smoother change in centroid shapes
+suggests a gradient across samples.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=\textwidth]{figure/treelapse/centroidveiw_linking}
+  \caption{
+    The most basic linking between the hierarchical clustering tree, a heatmap,
+    and the centroids. Each row is one species, each column is one sample. The
+    light regions in the heatmap correspond to drops in the time series. There
+    are two other, undisplayed panels corresponding to the last two thirds of
+    the heatmap columns.
+    \label{fig:centroidview_linking}
+  }
+\end{figure}
+
+Slight modifications to this display can enable more even sophisticated visual
+comparisons. First, it is often of interest to compare two or more clusters to
+one another. To this end, we allow the user to fix the view created by hovering
+over one node, then layer on new views created by hovering over other nodes.
+This view can clarify which features are responsible for differences between
+subtrees.
+
+A second modification allows a comparison of samples based on supplementary
+features, which are not directly employed in the distanced used for clustering.
+For example, suppose half of samples have property A, and the other half have
+property B. It can be interesting to ask whether this property is associated
+with features on which the clustering was defined. To this end, it is
+interesting to tabulate the number of samples within each subcluster with each
+property, looking for departures from independence. Visually, we can achieve
+this using a bar plot that response to mouse movement along the tree. Each bar
+is associated with one property, and the length of the bar is proportional to
+the number of the hovered-over node's descendants with that property. See Figure
+\ref{fig:centroidview_groups} for an example.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=\textwidth]{figure/treelapse/centroidview_groups}
+  \caption{
+    An example of our approach to counting the numbers of subtree samples with
+    different properties. Each sideways pair of bars corresponds to one
+    ``property'' -- a taxonomic assignment of the species. Each color
+    corresponds to one subtree of the hierarchical clustering. Evidenty, the
+    currently highlighted green subtree consists of more Lachnospiraceae, and
+    these are species which in one subject start at lower levels than those in
+    the orange subtree, and disappear after the first antibiotic time course.
+    \label{fig:centroidview_groups}
+  }
+\end{figure}
+
+
+\subsection{\texttt{centroidview} case studies}
+
+We apply this visualization approach to a hierarchical clustering on the
+antibiotics data of \cite{dethlefsen2011incomplete}. This study investigated the
+effects of antibiotics on the microbiome, especially as it relates to
+instability and resilience. About 50 samples were collected longitudinally for
+three subjects, and their trajectories of bacterial abundances were found using
+16s sequencing.
+
+Here we cluster species, using their abundances across individuals and
+timepoints as features. We group species according to their taxonomic families.
+Clustering returns collections of species with similar trajectories over time.
+Our goal is to succinctly represent the essential trajectories that are visible
+in the data, with the ultimate goal of interpreting these trajectories in
+relation to theories of ecological dynamics.
+
+An example display from centroid view applied to this data is given in Figure
+\ref{fig:centroidview_differential}. Evidently, the orange and green subtrees
+differentiate between species with differential responses to antibiotics in the
+first and third subjects. In particular, for the first subject, the green
+species are relatively unaffected by the second antibiotics, while the orange
+species are. On the other hand, the same green species in the third subject seem
+to recover to a lower level after the second antibiotics, while the orange
+species gradually recover to their original level. Further, the bar plot
+indicates that the the orange species consist of relatively more
+Lachnospiraceae, while the green subtree mostly contains Ruminococcaceae.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=\textwidth]{figure/treelapse/centroidview_differential}
+  \caption{
+    The complete centroidview display for the antibiotics data. Each row in the
+    heatmap corresponds to one species, and each column is a sample. Samples are
+    first grouped by person, then are sorted by time. The intensity of a cell in
+    the heatmap reflects the abundance of that species in that sample. The
+    hierarchical clustering tree is printed on the left. Subtree centroids are
+    given in the panels along the top right, with one panel per subject and one
+    line per subtree. Taxonomic breakdowns appear in the bottom right. Different
+    colors distinguish different subtrees.
+    \label{fig:centroidview_differential}
+  }
+\end{figure}
+
+
 
 \section{Conclusion and Future Work}\label{conclusion}
 
