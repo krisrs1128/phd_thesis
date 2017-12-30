@@ -156,7 +156,7 @@ individual corners, as in the Dirichlet multinomial mixture model.
 
 \begin{figure}
   \centering
-  \includegraphics[width=0.8\textwidth]{figure/lvm/lda_drawing_annotated}
+  \includegraphics[width=0.45\textwidth]{figure/lvm/lda_drawing_annotated}
   \caption{A visual representation of the Latent Dirichlet Allocation generative
     process. At the center is a plate diagram encoding the model in equation
     \ref{eq:lda_counts_generative}. The horizontal bars on the left are
@@ -169,7 +169,7 @@ individual corners, as in the Dirichlet multinomial mixture model.
     document purely from the given topic. Observed data are given by histograms
     on the right. The colors lie on a gradient between blue and red, depending
     on how much each topic contributes to that document. Each bar is a word, and
-    their heights give the observed word frequencies across documents. }
+    their heights give the observed word frequencies across documents.
     \label{fig:lda_drawing_annotated} }
 \end{figure}
 
@@ -200,13 +200,12 @@ in practice.
 
 \begin{figure}
   \centering
-  \includegraphics[width=0.8\textwidth]{figure/lvm/unigram_plate_annotated}
+  \includegraphics[width=0.45\textwidth]{figure/lvm/unigram_plate_annotated}
   \caption{A representation of the dynamic unigram model. The plate diagram
-    corresponds to the model in equation
-    \ref{eq:unigram_generative}. The random walk $\mu_{t}$ is drawn at the
-    bottom, and its transformation into $x_{t}$, which lies on the $V - 1$
-    dimensional simplex, the black curve at the top. Green points provide
-    observed word frequences across documents over
+    corresponds to the model in equation \ref{eq:unigram_generative}. The random
+    walk $\mu_{t}$ is drawn at the bottom, and its transformation into $x_{t}$,
+    which lies on the $V - 1$ dimensional simplex, the black curve at the top.
+    Green points mark observed word frequences across documents over
     time. \label{fig:unigram_plate_annotated}}
 \end{figure}
 
@@ -230,13 +229,11 @@ in the Nonnegative Matrix Factorization (NMF) literature
 
 We focus on the Gamma-Poisson factorization model (GaP) \citep{canny2004gap}
 which posits the hierarchical model
-
-\begin{align*}
-X &\sim \Poi\left(\Theta B^{T}\right) \\
-\Theta &\sim \Gam\left(a_{0} 1_{D \times K}, b_{0} 1_{D \times K}\right) \\
-B &\sim \Gam\left(c_{0} 1_{V \times K}, d_{0} 1_{V \times K} \right), 
-\end{align*}
-
+\begin{align}
+  X &\sim \Poi\left(\Theta B^{T}\right) \label{eq:nmf_generative} \\
+  \Theta &\sim \Gam\left(a_{0} 1_{D \times K}, b_{0} 1_{D \times K}\right) \nonumber \\
+  B &\sim \Gam\left(c_{0} 1_{V \times K}, d_{0} 1_{V \times K} \right), \nonumber
+\end{align}
 where our notation means that each entry in these matrices is sampled
 independently, with parameters given by the corresponding entry in the parameter
 matrix. As a consequence of the representation of the negative binomial
@@ -246,6 +243,19 @@ In practice, the hyperparameters $a_{0}, b_{0}, c_{0}$, and $d_{0}$ are unknown.
 In all of our experiments, we optimize over them, though it would also be
 possible to add a level to the hierarchy and place vague nonnegative priors on
 these parameters.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.45\textwidth]{figure/lvm/nmf_plate_annotated}
+  \caption{A visual description of the GaP model. The plate diagram corresponds
+    to equation \ref{eq:nmf_generative}. The vectors for $\theta_i$ and
+    $\beta_v$ both live in a $K$-dimensional
+    space -- they capture the influence of each topic in the $i^th$ document and
+    $v^{th}$ word, respectively. The angle between and length of these vectors
+    determines the expected count of term $v$ in document
+    $i$, since $a^T b = \|a\|\|b\| \cos\left(\text{angle}\left(a, b\right)\right)$.
+    \label{fig:nmf_plate_annotated} }
+\end{figure}
 
 In our simulation studies, we also consider a slight variant of this model,
 similar to the proposal of \citep{romero2014composition}, which independently
@@ -493,7 +503,7 @@ errors are no longer comparable across methods, with those for the MCMC sampling
 procedure appearing much larger across many simulation configurations. Second,
 the error rates are substantially larger than those in LDA. Examining
 Supplementary Figures \ref{fig:beta_contours_nmf_d20} and
-\ref{Fig:beta_contours_nmf_d100}, it appears that lack of identifiability in the
+\ref{fig:beta_contours_nmf_d100}, it appears that lack of identifiability in the
 NMF model may be affecting our ability to evaluate the resulting fits. The only
 way to distinguish between models $\left(c\Theta\right)\left(\frac{1}{c}
 B\right)^{T}$ and $\Theta B^{T}$ is through the prior, and the prior may not be
@@ -1205,4 +1215,3 @@ refine and critique their analysis using latent variables models.
     that as before, abundances are plotted on a square root
     scale. \label{fig:uneven_taxa_facet} }
 \end{figure}
-\end{document}
