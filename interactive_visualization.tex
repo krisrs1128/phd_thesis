@@ -80,6 +80,24 @@ species. Hence, we frame the tree-structured differential abundance problem as
 the question of identifying the largest taxonomic subtree whose associated
 bacteria are differentially abundant.
 
+\begin{figure}
+  \centering
+  \includegraphics[width=0.4\textwidth]{figure/treelapse/tree_differential_abundance}
+  \caption{A cartoon of the tree-structured differential abundance problem. The
+    tree represents the phylogenetic relationships between bacterial species,
+    which are located at leaves in the tree. The two groups of interest (e.g.,
+    treatment and control) are shaded in two colors, blue and green. Ignoring
+    the different colors, the overall width of a tree branch encodes the amount
+    of an observed sample that belongs to a group descending from that branch.
+    The relative widths of the blue and green components within a branch
+    corresponds to the relative frequency of that evolutionary group when
+    comparing samples from either group. Differential abundance problem is to
+    find large branches in this tree whose descendants have very different
+    abundances between the two groups -- these are large branches where the
+    split between colors is not even.
+    \label{fig:tree_differential_abundance} }
+\end{figure}
+
 In the tree-structured bacterial dynamics problem, the goal is to describe
 changes in bacterial abundances in an environment over time. As in the
 differential abundance problem, it is useful if these descriptions can be given
@@ -89,6 +107,20 @@ interested in understanding how bacterial populations respond to sudden or
 gradual environmental changes or how species fill, drop out from, or compete for
 environmental niches. Medically, these questions are important for illuminating
 the impact of antibiotic time courses or diet changes, for example.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.4\textwidth]{figure/treelapse/tree_differential_dynamics}
+  \caption{
+    The differential dynamics analog of Figure
+    \ref{fig:tree_differential_abundance}. Instead of comparing two groups
+    across many branches, we compare the average trajectories of taxa abundances
+    across many phylogenetic positions. We expect trajectories to be similar
+    across phylogenetically similar species -- rapid shifts in trajectories over
+    a small phylogenetic distances are of high interest. Generally, the problem
+    is to characterize variation in trajectories across phylogenetic space.
+    \label{fig:tree_differential_dynamics}}
+\end{figure}
 
 \subsection{Problem Abstraction}\label{problem-abstraction}
 
@@ -1299,8 +1331,6 @@ Lachnospiraceae, while the green subtree mostly contains Ruminococcaceae.
     \label{fig:centroidview_differential}
   }
 \end{figure}
-
-
 
 \section{Conclusion and Future Work}\label{conclusion}
 

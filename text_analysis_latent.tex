@@ -142,16 +142,36 @@ z_{dn} \vert \theta_{d} &\overset{iid}{\sim} \Mult\left(1, \theta_{d}\right) \te
 In microbiome applications, we will find a formulation that marginalizes over
 the $z_{dn}$ more convenient. Setting $x_{dv} = \sum_{n = 1}^{N_{d}}
 \indic{w_{dn} = v}$, we can write the marginal distribution as
-\begin{align*}
-x_{d\cdot} \vert \left(\beta_{k}\right)_{1}^{K} &\overset{iid}{\sim} \Mult\left(N_{d}, B\theta_{d}\right) \text{ for } d = 1, \dots, D\\
-\theta_{d} &\overset{iid}{\sim} \Dir\left(\alpha\right) \text{ for } d = 1, \dots, D \\
-\beta_{k} &\overset{iid}{\sim} \Dir\left(\gamma\right) \text{ for }k = 1, \dots, K,
-\end{align*}
+\begin{align}
+x_{d\cdot} \vert \left(\beta_{k}\right)_{1}^{K} &\overset{iid}{\sim} \Mult\left(N_{d}, B\theta_{d}\right) \text{ for } d = 1, \dots, D \label{eq:lda_counts_generative}\\
+\theta_{d} &\overset{iid}{\sim} \Dir\left(\alpha\right) \text{ for } d = 1, \dots, D \nonumber \\
+\beta_{k} &\overset{iid}{\sim} \Dir\left(\gamma\right) \text{ for }k = 1, \dots, K, \nonumber
+\end{align}
 where we have introduced the $V \times K$ matrix concatenating all topics
-column-wise, $B = \begin{pmatrix}\beta_{1}, \dots, \beta_{K}\end{pmatrix}$.
-Geometrically, LDA identifies samples with points in the convex hull of $K$
-topics $\left(\beta_{k}\right)$ on the $V$-dimensional simplex, rather than the
+column-wise, $B = \begin{pmatrix}\beta_{1}, \dots, \beta_{K}\end{pmatrix}$. This
+process is illustrated in Figure \ref{fig:lda_drawing_annotated}. Geometrically,
+LDA identifies samples with points in the convex hull of $K$ topics
+$\left(\beta_{k}\right)$ on the $V$-dimensional simplex, rather than the
 individual corners, as in the Dirichlet multinomial mixture model.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.45\textwidth]{figure/lvm/lda_drawing_annotated}
+  \caption{A visual representation of the Latent Dirichlet Allocation generative
+    process. At the center is a plate diagram encoding the model in equation
+    \ref{eq:lda_counts_generative}. The horizontal bars on the left are
+    mixed-memberships $\theta_{i}$ -- each bar corresponds to a sample and has
+    more blue or red depending on whether that sample has more contribution from
+    the blue or red topics. The topics, $\beta$, are given by blue and red
+    probability mass functions at the bottom of the figure. In this example
+    there are only two topics. Each vertical bar is a word, and the height of
+    the bar gives the probability of drawing that word when generating a
+    document purely from the given topic. Observed data are given by histograms
+    on the right. The colors lie on a gradient between blue and red, depending
+    on how much each topic contributes to that document. Each bar is a word, and
+    their heights give the observed word frequencies across documents.
+    \label{fig:lda_drawing_annotated} }
+\end{figure}
 
 \subsection{Dynamic Unigram model}
 
@@ -162,11 +182,11 @@ Unigram model \citep{blei2006dynamic}. The underlying curve reflects the gradual
 of probabilities over time, and is implemented by passing a random walk through
 a multilogit link. That is, the Dynamic Unigram model posits the generative
 model
-\begin{align*}
-x_{d\cdot} \vert \mu_{t\left(d\right)}  &\overset{iid}{\sim} \Mult\left(N_{d}, S\left(\mu_{t\left(d\right)}\right)\right) \text{ for } d = 1, \dots, D\\
-\mu_{t} \vert \mu_{t - 1} &\overset{iid}{\sim} \Gsn\left(\mu_{t - 1}, \sigma^{2}I_{V}\right) \text{ for } t = 1, \dots, T \\
-\mu_{0} &\overset{iid}{\sim} \Gsn\left(0, \sigma^{2}I_{V}\right),
-\end{align*}
+\begin{align}
+x_{d\cdot} \vert \mu_{t\left(d\right)}  &\overset{iid}{\sim} \Mult\left(N_{d}, S\left(\mu_{t\left(d\right)}\right)\right) \text{ for } d = 1, \dots, D \label{eq:unigram_generative} \\
+\mu_{t} \vert \mu_{t - 1} &\overset{iid}{\sim} \Gsn\left(\mu_{t - 1}, \sigma^{2}I_{V}\right) \text{ for } t = 1, \dots, T \nonumber \\
+\mu_{0} &\overset{iid}{\sim} \Gsn\left(0, \sigma^{2}I_{V}\right), \nonumber
+\end{align}
 where $S$ is the multilogit link
 \begin{align*}
 \left[S\left(\mu\right)\right]_{v} = \frac{\exp{\mu_{v}}}{\sum_{v^{\prime}} \exp{\mu_{v^{\prime}}}},
@@ -177,6 +197,17 @@ $\reals^{V}$ with step-size $\sigma$, and $S$ transforms the walk into a
 sequence of probability distributions. In our experiments, we place a vague
 inverse-gamma prior on $\sigma^{2}$, since this hyperparameter is rarely known
 in practice.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.45\textwidth]{figure/lvm/unigram_plate_annotated}
+  \caption{A representation of the dynamic unigram model. The plate diagram
+    corresponds to the model in equation \ref{eq:unigram_generative}. The random
+    walk $\mu_{t}$ is drawn at the bottom, and its transformation into $x_{t}$,
+    which lies on the $V - 1$ dimensional simplex, the black curve at the top.
+    Green points mark observed word frequences across documents over
+    time. \label{fig:unigram_plate_annotated}}
+\end{figure}
 
 \subsection{Nonnegative Matrix Factorization}
 \label{sec:nmf}
@@ -198,13 +229,11 @@ in the Nonnegative Matrix Factorization (NMF) literature
 
 We focus on the Gamma-Poisson factorization model (GaP) \citep{canny2004gap}
 which posits the hierarchical model
-
-\begin{align*}
-X &\sim \Poi\left(\Theta B^{T}\right) \\
-\Theta &\sim \Gam\left(a_{0} 1_{D \times K}, b_{0} 1_{D \times K}\right) \\
-B &\sim \Gam\left(c_{0} 1_{V \times K}, d_{0} 1_{V \times K} \right), 
-\end{align*}
-
+\begin{align}
+  X &\sim \Poi\left(\Theta B^{T}\right) \label{eq:nmf_generative} \\
+  \Theta &\sim \Gam\left(a_{0} 1_{D \times K}, b_{0} 1_{D \times K}\right) \nonumber \\
+  B &\sim \Gam\left(c_{0} 1_{V \times K}, d_{0} 1_{V \times K} \right), \nonumber
+\end{align}
 where our notation means that each entry in these matrices is sampled
 independently, with parameters given by the corresponding entry in the parameter
 matrix. As a consequence of the representation of the negative binomial
@@ -214,6 +243,19 @@ In practice, the hyperparameters $a_{0}, b_{0}, c_{0}$, and $d_{0}$ are unknown.
 In all of our experiments, we optimize over them, though it would also be
 possible to add a level to the hierarchy and place vague nonnegative priors on
 these parameters.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.45\textwidth]{figure/lvm/nmf_plate_annotated}
+  \caption{A visual description of the GaP model. The plate diagram corresponds
+    to equation \ref{eq:nmf_generative}. The vectors for $\theta_i$ and
+    $\beta_v$ both live in a $K$-dimensional
+    space -- they capture the influence of each topic in the $i^th$ document and
+    $v^{th}$ word, respectively. The angle between and length of these vectors
+    determines the expected count of term $v$ in document
+    $i$, since $a^T b = \|a\|\|b\| \cos\left(\text{angle}\left(a, b\right)\right)$.
+    \label{fig:nmf_plate_annotated} }
+\end{figure}
 
 In our simulation studies, we also consider a slight variant of this model,
 similar to the proposal of \citep{romero2014composition}, which independently
@@ -375,7 +417,7 @@ while the second refers to the number of samples $D$. The analogous figure when
 $V = 325$ is provided in Supplementary Figure \ref{fig:beta_contours_v325}.
 
 \begin{figure}
-  \centering\includegraphics[width=\textwidth]{figure/beta_contours_v650}
+  \centering\includegraphics[width=\textwidth]{figure/lvm/beta_contours_v650}
   \caption{Different inference algorithms for LDA provide comparable posterior
     estimates under the simulation configurations we have considered. Within
     each panel, we display the true pairs $\left(\sqrt{\beta_{v1}},
@@ -413,7 +455,7 @@ line, where the error equals one standard deviation.
 
 \begin{figure}
   \centering
-  \includegraphics[width=\textwidth]{figure/beta_errors_lda}
+  \includegraphics[width=\textwidth]{figure/lvm/beta_errors_lda}
   \caption{A summary of the errors and uncertainty across models and regimes for
     the $\beta_{vk}$ in Figure \ref{fig:beta_contours_v650} and Supplementary
     Figure \ref{fig:beta_contours_v325}. On the $x$-axis, we plot the difference
@@ -461,7 +503,7 @@ errors are no longer comparable across methods, with those for the MCMC sampling
 procedure appearing much larger across many simulation configurations. Second,
 the error rates are substantially larger than those in LDA. Examining
 Supplementary Figures \ref{fig:beta_contours_nmf_d20} and
-\ref{Fig:beta_contours_nmf_d100}, it appears that lack of identifiability in the
+\ref{fig:beta_contours_nmf_d100}, it appears that lack of identifiability in the
 NMF model may be affecting our ability to evaluate the resulting fits. The only
 way to distinguish between models $\left(c\Theta\right)\left(\frac{1}{c}
 B\right)^{T}$ and $\Theta B^{T}$ is through the prior, and the prior may not be
@@ -613,7 +655,7 @@ along the phylogenetic tree in the prior for the $\beta_{k}$s, such smoothness
 emerges in the fitted model.
 
 \begin{figure}
-  \centering\includegraphics[width=\textwidth]{figure/visualize_lda_theta_boxplot-F}
+  \centering\includegraphics[width=\textwidth]{figure/lvm/visualize_lda_theta_boxplot-F}
   \caption{Boxplots represent approximate posteriors for estimated mixture
     memberships $\theta_{d}$, and their evolution over time. That is, each row
     of panels provides a different sequence of $\theta_{dk}$ for a single $k$,
@@ -644,7 +686,7 @@ Specifically, representatives of the $k^{th}$ topic were found by choosing the
 \beta_{k^{\prime} v}$.
 
 \begin{figure}
-  \centering\includegraphics[width=\textwidth]{figure/topic_prototypes}
+  \centering\includegraphics[width=\textwidth]{figure/lvm/topic_prototypes}
   \caption{Individual species that have been identified as prototypical of
     single topics are highlighted here, to provide a characterization of topics
     linked to the original bacterial abundance data. Rows and columns of panels
@@ -732,7 +774,7 @@ where the random subset $\mathcal{V}$ indexes the displayed species.
 
 \begin{figure}
   \centering
-  \includegraphics[width=\textwidth]{figure/posterior_check_ts-F}
+  \includegraphics[width=\textwidth]{figure/lvm/posterior_check_ts-F}
   \caption{We can visualize the simulated time series for a subset of species
     and compare them with the observed ones, as a posterior check. Each panel
     represents one species. The black lines represent the observed
@@ -957,14 +999,14 @@ refine and critique their analysis using latent variables models.
 
 \begin{figure}[!p]
   \centering
-  \includegraphics[width=\textwidth]{figure/beta_contours_v325}
+  \includegraphics[width=\textwidth]{figure/lvm/beta_contours_v325}
   \caption{The analog of Figure \ref{fig:beta_contours_v650} in the case that $V
     = 325$. \label{fig:beta_contours_v325}}
 \end{figure}
 
 \begin{figure}[!p]
   \centering
-  \includegraphics[width=\textwidth]{figure/beta_contours_nmf_d20}
+  \includegraphics[width=\textwidth]{figure/lvm/beta_contours_nmf_d20}
   \caption{The results of the NMF experiment with $D = 20$ Within each panel, we
     display the true value of $\sqrt{\beta_{v}}$ as black points, while linked
     orange points give associated posterior medians. Note that the axes are
@@ -977,14 +1019,14 @@ refine and critique their analysis using latent variables models.
 
 \begin{figure}[!p]
   \centering
-  \includegraphics[width=\textwidth]{figure/beta_contours_nmf_d100}
+  \includegraphics[width=\textwidth]{figure/lvm/beta_contours_nmf_d100}
   \caption{The analog of Figure \ref{fig:beta_contours_nmf_d20} when $D = 100$.
   \label{fig:beta_contours_nmf_d100}}
 \end{figure}
 
 \begin{figure}[!p]
   \centering
-  \includegraphics[width=\textwidth]{figure/beta_errors_nmf}
+  \includegraphics[width=\textwidth]{figure/lvm/beta_errors_nmf}
   \caption{A version of Figure \ref{fig:beta_errors_lda} for the NMF simulation
     experiment. The figures are read similarly, except there are a larger number
     of experimental configurations -- rows now distinguish the assumed model and
@@ -998,7 +1040,7 @@ refine and critique their analysis using latent variables models.
 
 \begin{figure}[ht]
   \centering
-  \includegraphics[width=\textwidth]{figure/mu_intervals}
+  \includegraphics[width=\textwidth]{figure/lvm/mu_intervals}
   \caption{
     A comparison of the posterior $p\left(\mu_{tv} \vert x\right)$ to the known
     underlying $\mu_{tv}$, in the unigram simulation experiment. The $x$-axis
@@ -1014,7 +1056,7 @@ refine and critique their analysis using latent variables models.
 
 \begin{figure}[ht]
   \centering
-  \includegraphics[width=\textwidth]{figure/mu_errors_unigram}
+  \includegraphics[width=\textwidth]{figure/lvm/mu_errors_unigram}
   \caption{A simplification of Figure \ref{fig:mu_intervals}, displaying RMSE when
     using posterior medians to estimate simulation $\mu_{tv}$s ($x$-axis) and
     the standard deviations of posterior marginals ($y$-axis), across
@@ -1025,7 +1067,7 @@ refine and critique their analysis using latent variables models.
 \end{figure}
 
 \begin{figure}[!p]
-  \centering\includegraphics[width=\textwidth]{figure/visualize_lda_beta-F}
+  \centering\includegraphics[width=\textwidth]{figure/lvm/visualize_lda_beta-F}
   \caption{Each credible interval describes an approximate posterior for one
     $\beta_{vk}$. Coupled with Figure \ref{fig:antibiotics_lda_theta}, this
     guides the interpretation of which bacterial taxa are more or less prevalent
@@ -1040,7 +1082,7 @@ refine and critique their analysis using latent variables models.
 
 \begin{figure}[!p]
   \centering
-  \includegraphics[width=\textwidth]{figure/antibiotics_unigram_mu-F}
+  \includegraphics[width=\textwidth]{figure/lvm/antibiotics_unigram_mu-F}
   \caption{Each posterior credible interval refers to one $\mu_{vt}$. The rows
     are a subset of times $t$ around the first antibiotic time course. The first
     row corresponds to a timepoint from before the treatment, the middle two
@@ -1053,7 +1095,7 @@ refine and critique their analysis using latent variables models.
 
 \begin{figure}[!p]
   \centering
-  \includegraphics[scale=0.2]{figure/posterior_check_quantiles-F}
+  \includegraphics[scale=0.2]{figure/lvm/posterior_check_quantiles-F}
   \caption{As a posterior check, we compare the observed with simulated
     data quantiles, using a qq-plot. To reduce overlap, we have introduced a
     uniform $\left[0, 0.2\right]$ jitter on both axes. Further, the points are
@@ -1066,7 +1108,7 @@ refine and critique their analysis using latent variables models.
 
 \begin{figure}[!p]
   \centering
-  \includegraphics[width=\textwidth]{figure/posterior_check_evals-F}
+  \includegraphics[width=\textwidth]{figure/lvm/posterior_check_evals-F}
   \caption{As a posterior predictive check, we compute eigenvalues of data
     simulated from the fitted LDA model. The clouds of points summarize the
     posterior predictive distribution, while the black circles represent
@@ -1078,7 +1120,7 @@ refine and critique their analysis using latent variables models.
 
 \begin{figure}[!p]
   \centering
-  \includegraphics[width=\textwidth]{figure/posterior_check_scores-loadings-F}
+  \includegraphics[width=\textwidth]{figure/lvm/posterior_check_scores-loadings-F}
   \caption{The eigenvalues displayed in Figure
     \ref{fig:antibiotics_posterior_evals} correspond to PCA results computed on
     posterior predictive samples, which are aligned and overlaid here. The left
@@ -1090,31 +1132,31 @@ refine and critique their analysis using latent variables models.
 \end{figure}
 
 \begin{figure}[!p]
-  \centering\includegraphics[width=\textwidth]{figure/visualize_lda_theta_boxplot-D}
+  \centering\includegraphics[width=\textwidth]{figure/lvm/visualize_lda_theta_boxplot-D}
   \caption{The analog of Figure \ref{fig:antibiotics_lda_theta} for Subject
     D. \label{fig:antibiotics_lda_theta_D}}
 \end{figure}
 
 \begin{figure}[!p]
-  \centering\includegraphics[width=\textwidth]{figure/visualize_lda_beta-D}
+  \centering\includegraphics[width=\textwidth]{figure/lvm/visualize_lda_beta-D}
   \caption{The analog of Supplementary Figure \ref{fig:antibiotics_lda_beta} for
     Subject D.}
 \end{figure}
 
 \begin{figure}[!p]
-  \centering\includegraphics[width=\textwidth]{figure/visualize_lda_theta_boxplot-E}
+  \centering\includegraphics[width=\textwidth]{figure/lvm/visualize_lda_theta_boxplot-E}
   \caption{The analog of Figure \ref{fig:antibiotics_lda_theta} for Subject E.}
 \end{figure}
 
 \begin{figure}[!p]
-  \centering\includegraphics[width=\textwidth]{figure/visualize_lda_beta-E}
+  \centering\includegraphics[width=\textwidth]{figure/lvm/visualize_lda_beta-E}
   \caption{The analog of Supplementary Figure \ref{fig:antibiotics_lda_beta} for
     Subject E. \label{fig:antibiotics_lda_beta_E}}
 \end{figure}
 
 \begin{figure}[!p]
   \centering
-  \includegraphics[width=\textwidth]{figure/species_prototypes_1}
+  \includegraphics[width=\textwidth]{figure/lvm/species_prototypes_1}
   \caption{Rather than displaying all representative species together, as in
     Figure \ref{fig:topic_prototypes}, we can sort species according to how
     representative they are of an individual topic. Here, the 15 species most
@@ -1126,28 +1168,28 @@ refine and critique their analysis using latent variables models.
 
 \begin{figure}[!p]
   \centering
-  \includegraphics[width=\textwidth]{figure/species_prototypes_2}
+  \includegraphics[width=\textwidth]{figure/lvm/species_prototypes_2}
   \caption{The analog of Figure \ref{fig:species_prototypes_1} for Topic
     2.\label{fig:species_prototypes_2}. }
 \end{figure}
 
 \begin{figure}[!p]
   \centering
-  \includegraphics[width=\textwidth]{figure/species_prototypes_3}
+  \includegraphics[width=\textwidth]{figure/lvm/species_prototypes_3}
   \caption{The analog of Figure \ref{fig:species_prototypes_1} for Topic
     3. \label{fig:species_prototypes_3} }
 \end{figure}
 
 \begin{figure}[!p]
   \centering
-  \includegraphics[width=\textwidth]{figure/species_prototypes_4}
+  \includegraphics[width=\textwidth]{figure/lvm/species_prototypes_4}
   \caption{The analog of Figure \ref{fig:species_prototypes_1} for Topic
     4. \label{fig:species_prototypes_4} }
 \end{figure}
 
 \begin{figure}[!p]
   \centering
-  \includegraphics[width=0.8\textwidth]{figure/uneven_taxa_ordered}
+  \includegraphics[width=0.8\textwidth]{figure/lvm/uneven_taxa_ordered}
   \caption{We can search for entire taxonomic families that seem associated with
     individual topics. Here we calculate the average of the topic
     representativeness statistic $\beta_{kv} - \sum_{k^{\prime} \neq k}
@@ -1161,7 +1203,7 @@ refine and critique their analysis using latent variables models.
 
 \begin{figure}[!p]
   \centering
-  \includegraphics[width=\textwidth]{figure/uneven_taxa_facet}
+  \includegraphics[width=\textwidth]{figure/lvm/uneven_taxa_facet}
   \caption{All species within the families screened out from Figure
     \ref{fig:uneven_taxa_ordered} are displayed here. Species among the
     representatives displayed in Figure \ref{fig:topic_prototypes} are colored
@@ -1173,4 +1215,3 @@ refine and critique their analysis using latent variables models.
     that as before, abundances are plotted on a square root
     scale. \label{fig:uneven_taxa_facet} }
 \end{figure}
-\end{document}
