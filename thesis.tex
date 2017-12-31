@@ -11,7 +11,8 @@
 \usepackage[noend]{algorithmic}
 \input{preamble.tex}
 
-\title{Discovery and Visualization of Latent Structure \\ in the Microbiome}
+\title{Discovery and Visualization of Latent Structure \\ with applications to
+  the Microbiome}
 \author{Kris Sankaran}
 \dept{Statistics}
 
@@ -20,18 +21,39 @@
 \tableofcontents
 
 \chapter{Multitable Methods and Microbiome Data Integration}
+\label{ch:multitable}
 \input{multitable_methods}
 
 \chapter{Interactive Visualization of Microbial Counts}
+\label{ch:interactive_vis}
 \input{interactive_visualization}
 
 \chapter{Latent Variables Models for the Microbiome}
+\label{ch:text_analysis}
 \input{text_analysis_latent}
 
 \chapter{Inference of Dynamic Regimes in the Microbiome}
+\label{ch:dynamic_regimes}
 \input{dynamic_regimes}
 
 \chapter{Conclusion}
+
+\appendix
+\chapter{Supplementary Figures for Multitable Methods}
+\label{ch:multitable_supp_figs}
+\input{appendix_multitable_figures}
+
+\chapter{Derivation details for Multitable Methods}
+\label{ch:multitable_supp_derivations}
+\input{appendix_multitable_derivations}
+
+\chapter{Supplementary Figures for Latent Variables Models}
+\label{ch:lvm_supp_figures}
+\input{appendix_text_analysis}
+
+\chapter{Supplementary Figures for Detection of Dynamic Regimes}
+\label{ch:dynamic_regimes_supp}
+\input{appendix_dynamic_regimes}
 
 \bibliographystyle{plainnat}
 \bibliography{refs.bib}
