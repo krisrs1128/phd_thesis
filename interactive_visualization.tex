@@ -224,6 +224,16 @@ until the remaining nodes fit within a given screen size. By adjusting the
 minimal DOI below which nodes are hidden, the user can transition between
 node-specific and full-tree scales.
 
+\begin{figure}
+  \centering
+  \includegraphics[width=0.4\textwidth]{figure/treelapse/Internet_map_1024}
+  \caption{An example of the focus-plus-context principle in action. The main
+    view gives a global view of a part of the internet, while the inset zooms
+    into a small neighborhood. Context is maintained via the inlay's border
+    links. Image from The Opte Project, distributed under a Creative Commons
+    license. \label{fig:internet_map}}
+\end{figure}
+
 In linking, alternative representations of the same samples are placed
 side-by-side in order to display covariation across views. A canonical
 application is to linked scatterplot brushing \citep{becker1987brushing}. Here,
@@ -237,6 +247,18 @@ timeboxes, linking can be interpreted as database queries or conditional
 probabilities: given a subset of the series after conditioning on the values for
 one set of features, what are the values for a second set
 \citep{buja1996interactive}?
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.4\textwidth]{figure/treelapse/Ggobi04brushlink}
+  \caption{
+    An example of linked scatterplot brushing, as implemented by the GGobi
+    package \citep{voigt2002extended}. The panel in the $ij^{th}$ position gives
+    the scatterplot of variables $i$ and $j$ against each other. Brushing a
+    set of points in the second panel in the first row highlights the same
+    points across all panels.
+    \label{fig:ggobi_brushlink} }
+\end{figure}
 
 Finally, unrelated to established visualization principles, we note that our
 work is deliberately grounded in the R software ecosystem. This connection is
