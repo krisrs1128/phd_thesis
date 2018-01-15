@@ -1,0 +1,34 @@
+\prefacesection{Abstract}
+
+Human microbiomes -- the collections of bacteria living around and within the
+human body -- are complex ecological systems, and describing their structure and
+function in different contexts is important from both basic scientific and
+medical perspectives. Viewed through a statistical lens, many microbiome
+analysis goals can framed in terms of discovering and describing latent
+structure. For example, this structure might reflect sudden environmental shocks
+that affect certain subsets of species, or may illuminate gradual shifts in
+community composition. In this thesis, we survey and develop ideas from the data
+visualization and probabilistic modeling literatures that we have found useful
+in identifying and characterizing such structure in the microbiome.
+
+On the data visualization front, we describe the focus-plus-context and linking
+principles, and describe new R packages that use these ideas to facilitate
+visualization of hierarchical collections of time series. These tools streamline
+the navigation of complex data, guiding researchers towards plausible
+statistical models.
+
+We then turn our attention to modeling, motivated by the fact that microbiome
+species abundance data often have effectively low-dimensional evolutionary,
+temporal, and count structure. We then characterize and review methods
+appropriate for three classes of common microbiome data analysis problems --
+dimensionality reduction, multitable integration, and regime detection. For
+dimensionality reduction, we explore basic probabilistic latent variable models,
+focusing on mixed-membership and matrix factorization techniques. For multitable
+integration, we contrast nonparametric ordination, convex optimization, and
+probabilistic modeling approaches. For regime detection, we compare variants of
+hidden markov, dynamical systems, and changepoint models, along with baselines
+that don't take into account time structure.
+
+Throughout, we illustrate visualization and modeling techniques using real human
+gut microbiome data. Code and data for all experiments is available publicly
+online.
