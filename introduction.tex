@@ -1,0 +1,75 @@
+\chapter{Introduction}
+\label{ch:introduction}
+
+A single question lies behind the research efforts of both the data
+visualization and statistical modeling communities: What are the most effective
+techniques for identifying and representing latent structure in data? The
+problem is that even moderately large collections of data are difficult to
+mentally process -- some reduction, some more succinct representation, is
+necessary before the data can be used to guide reasoning. In visualization, a
+representation is a group of markings on a page (or screen), while in
+statistics, a representation is set of mathematical objects, fitted parameters
+or functions, for example. In spite of the differences in the substrates from
+which these representations are molded, the visualization and statistics
+communities have arrived at many similar principles for guiding this reduction.
+For example, an information-dense figure describes a large collection of numbers
+in a small physical space on the page \citep{tufte2014visual}, while a
+sufficient statistic encapsulates everything about a data set necessary to
+estimate a parameter. This thesis blends ideas from both communities to make the
+representation of latent structure more accessible and automatic for the
+practicing data analyst.
+
+\begin{figure}
+  \includegraphics{figure/intro_mean}
+  \includegraphics{figure/intro_smooth}
+  \caption{Summary statistics among user selected points and smooth function
+    fits are natural data reductions when working from visualization and
+    statistical perspectively, respectively.}
+\end{figure}
+
+Data is never analyzed in a vacuum. Its collection and study is only valuable
+as far as it helps resolve important ambiguities in the systems of interest. To
+ground our study, we focus on applications to microbiome data, seeking
+representations that we believe will simplify the investigation of a variety of
+microbiome-related questions.
+
+The essential contribution of this thesis is to streamline and democratize the
+discovery and visualization of latent structure in the microbiome. Concretely,
+this involves several lines of study,
+\begin{itemize}
+  \item Developing software packages: Sometimes the same conceptually complex or
+    time-consuming representation task appears repeatedly across studies. This
+    has motivated the creation of packages to simplify these difficult steps,
+    several of which are reviewed in Chapter \ref{ch:interactive_vis}.
+  \item Designing example workflows: There are many approaches possible to a a
+    microbiome analysis pipeline, from raw data to model criticism, but few
+    references for how to choose between options and assemble a coherent
+    workflow. Chapter \ref{ch:text_analysis} offers some basic guideposts.
+  \item Distilling relevant literature: Sometimes the barrier to effective
+    analysis is not the implementation of a technique, but knowledge of which
+    methods are relevant and effective. This is especially the case for more
+    specialized analysis questions, and is the underlying motivation for
+    Chapters \ref{ch:multitable} and \ref{ch:dynamic_regimes}.
+\end{itmeize}
+Our hope is that this work empowers the microbiome community to make full use of
+ideas developed in statistics and data visualization.
+
+In more detail, Chapter \ref{ch:interactive_vis} introduces three new data
+visualization packages, \texttt{treelapse}, \texttt{centroidview}, and
+\texttt{mvarvis}. Each is designed with a particular visual comparison in mind
+-- for example, \texttt{treelapse} and \texttt{centroidview} address the
+tree-structured differential abundance and dynamics problems, while
+\texttt{mvarVis} simplifies comparisons between ordinations. Chapter
+\ref{ch:text_analysis} compares several probabilistic models for representing
+longitudinal data, relying on simulations and a case study. Chapter
+\ref{ch:multitable} is focused on the problem of integrating multiple data
+sources into a unified representation of between-table covariation. This
+situation is frequently encountered in modern microbiome studies, where
+participants provide samples to be processed by several 'omics technologies at
+once. Finally, chapter \ref{ch:dynamic_regimes} reviews literature on
+discovering latent dynamic regimes in time series. This type of reduction is
+relevant in studies of stability and change in the microbiome, a topic of
+ecological and medical interest.
+
+A key component of the scholarship behind this thesis lives in computer code,
+all of which is publicly available, with links appearing within each chapter.
