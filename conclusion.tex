@@ -1,0 +1,97 @@
+\chapter{Conclusion}
+\label{ch:conclusion}
+
+In this thesis, we have evaluated workflows, developed software, and distilled
+literature relevant to discovery and visualization of latent structure in the
+microbiome.
+
+In Chapter \ref{ch:interactive_vis}, we developed a collection of packages that
+made use of data visualization concepts to ease pain-points in microbiome data
+analysis. The package \texttt{treelapse} addresses the problem of comparing time
+series that can be arranged hierarchically, borrows the focus-plus-context and
+linked brushing ideas, common in the data visualization literature, to make it
+easy to ask which parts of a phylogenetic tree contain trajectories of a given
+shape. Conversely, we facilitate querying subsets of a tree to see what
+trajectories match those nodes. This interactivity greatly speeds up the process
+of exploring species dynamics, which can otherwise involve printing hundreds of
+species trajectory plots.
+
+The package \texttt{centroidview} offers a different take on the subtree
+visualization problem, more directly suited to the problem of comparing
+centroids corresponding to subtrees in a hierarchical clustering. It provides a
+few additional visual elements -- color, a heatmap, and comparison barplots --
+that enrich a \texttt{treelapse}-type display for characterizing clusters at
+different levels of granularity.
+
+Chapter \ref{ch:text_analysis} evaluates workflows for probabilistically
+modeling microbiome data inspired by literature in the text analysis literature.
+We describe probabilistic representations of the sample-by-species abundance
+matrix, which we view as analogous to a document-term matrix. While the analogy
+between document-term and species abundance matrices had been observed before,
+the only previous papers applying text analysis models to the microbiome failed
+to visualize model output (focusing on test performance instead) or provide code
+and data. In addition to making this workflow easily accessible, we perform
+simulations and model criticism for several different approaches, which offers
+guidance on the appropriateness of alterantive models to microbiome analysis.
+
+Chapter \ref{ch:multitable} reviews the problem of relating several tables to
+one another, motivated by an application to a study comparing body fat
+composition to bacterial species abundances, with interest in connections
+between the microbiome and host metabolism. If there were only one summary of
+body fat -- for example, BMI -- this is simply a high-dimensional regression
+problem. However, this study provides fat and muscle mass measurements at
+various locations across the body, in order to provide a richer portrait of body
+fat composition than simply BMI. There are many proposals for studying such
+multitable data, developed across various literatures, including statistics,
+ecology, and machine learning, for example. This chapter provides a unified
+review, along with applications to the body composition data, with the overall
+goals of comparison and distillation.
+
+In Chapter \ref{ch:dynamic_regimes}, we formulate the regime detection problem
+in the context of microbiome studies and review associated methods. The problem
+here is to identify time segments where species trajectories switch behavior. It
+is also of interest here to characterize subsets of species with similar changes
+in dynamics. In our survey, we describe statistical and machine learning
+techniques, including those based on regression trees, Bayesian nonparametric
+Hidden Markov Models, Gaussian Processes, and changepoint detection. We discuss
+differences in underlying assumptions, modeling performance, computational
+efficiency, and types of output made available.
+
+This thesis lays the groundwork for potential projects related to visualization
+and workflow evaluation of biological data. Towards a richer suite of
+visualization tools, the focus-plus-context and linking principles could be
+applied broadly to a variety of data structures and scientific questions. For
+example, the study of networks can shed light on basic problems of microbial
+ecology and genetics \citep{akutsu2000inferring, coyte2015ecology}, and
+networks, like trees, are difficult to study at multiple scales. It is easy to
+imagine variants of DOI-trees that collapse tightly-knit communities in a
+network. This could provide an interactive analog of a hierarchical clustering
+of a network adjacency matrix, a type of visual multiscale analysis. Further,
+these networks often evolve over time \citep{kolar2010estimating}, and the
+linking ideas advocated in the \texttt{treelapse} package offer a path towards
+incorporating additional temporal structure.
+
+Similarly, the linking idea, is naturally applicable to the multitable problems
+reviewed in Chapter \ref{ch:multitable}. We could imagine linked versions of
+sparse CCA, for example, which describe the variation in one table conditional
+on the sparse CCA scores of another. Indeed, there could be much to be gained by
+combining the automatic reductions provided by statistical methods with the
+ease-of-navigation offered by interactive visualization.
+
+The workflow and distillation ideas in Chapters \ref{ch:text_analysis},
+\ref{ch:multitable}, and \ref{ch:dynamic_regimes} could be developed in several
+directions. In Chapter \ref{ch:text_analysis}, we relied upon posterior
+predictive checks to evaluate the quality of Bayesian model fits. Recently,
+several more quantitative measures of model quality \citep{gorham2015measuring,
+  liu2016kernelized} and robustness \citep{giordano2016fast} have become
+available, and applying them to model criticism in the workflows of this thesis
+would be worthwhile. Further, wrapping these methods in fully documented R
+packages, would facilitate more straightforwards experimentation by data
+analysis practitioners. Finally, blending ideas between methods across chapters
+could lead to useful hybrid algorithms. For example, it is sometimes necessary
+to perform regime detection in multitable data, or to consider DTM-style
+zero-inflation across clustered time series.
+
+We expect that the foundation laid out by this thesis will be relevant to the
+creation and evaluation of methods related to data visualization and latent
+variable modeling, as these fields continue to develop.
