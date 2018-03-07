@@ -2,23 +2,6 @@
 \label{ch:interactive_vis}
 
 We introduce methods for visualization of data structured along trees,
-especially hierarchically structured collections of time series. To this end, we
-identify questions that often emerge when working with hierarchical data and
-provide an R package to simplify their investigation. Our key contribution is
-the adaptation of the visualization principles of focus-plus-context and linking
-to the study of tree-structured data.
-
-Our motivating application is to the analysis of bacterial time series, where an
-evolutionary tree relating bacteria is available a priori. However, we have
-identified common problem types where, if a tree is not directly available, it
-can be constructed from data and then studied using our techniques. We perform
-detailed case studies to describe the alternative use cases, interpretations,
-and utility of the proposed visualization methods.
-
-
-\section{Treelapse}\label{introduction}
-
-We introduce methods for visualization of data structured along trees,
 especially hierarchically structured collections of time series. We hope both to
 characterize generically useful techniques for interactively visualizing
 hierarchical data and to offer practical tools for implementing such displays.
@@ -34,15 +17,17 @@ a priori. However, we have identified common problem types where, if a tree is
 not directly available, it can be constructed from data and then studied using
 our techniques.
 
-We have implemented our visualizations in D3, but encapsulated in an R package,
-called treelapse, to facilitate rapid turnover from data preparation and
-modeling to interactive exploration, and vice versa. Our code is open-source,
-and is linked in the supplementary materials. We hope this package encourages
-data analysts to work at the border between data modeling and visualization, and
-more generally empowers a wider audience to apply less widely known, but
-powerful, visualization ideas.
+\section{Treelapse}\label{introduction}
 
-In summary, our key contributions are,
+Our first approach to these data is encapsulated in an R package, called
+treelapse, to facilitate rapid turnover from data preparation and modeling to
+interactive exploration, and vice versa. Our code is open-source and available
+at \url{https://github.com/krisrs1128/treelapse}. We hope this package
+encourages data analysts to work at the border between data modeling and
+visualization, and more generally empowers a wider audience to apply less widely
+known, but powerful, visualization ideas.
+
+The key contributions of the current study are,
 \begin{itemize}
 \item Proposals for visualizing hierarchically structured data, based on
   principles from the data visualization community.
@@ -51,7 +36,7 @@ In summary, our key contributions are,
   through case studies in both scientific and societal contexts.
 \end{itemize}
 
-The paper is organized as follows. First, we describe our motivating application
+This chapter is organized as follows. First, we describe our motivating application
 to the microbiome and the associated generic analysis tasks. Next, we review the
 underlying visualization principles behind our contributions. Then we then
 connect these principles to analysis tasks we identified earlier, describing in
@@ -59,9 +44,9 @@ detail the visualization methods we have implemented in treelapse. We close with
 several case studies using publicly available data across both microbiome and
 non-microbiome related applications.
 
-\subsection{Problem Motivation}\label{problem-motivation}
+\subsection{Problem motivation}\label{problem-motivation}
 
-A microbiome is a community of bacteria living in given environments, for
+A microbiome is a community of bacteria living in a given environment, for
 example, ocean water or the human gut \citep{human2012structure, cho2012human}.
 Progress in the field has been rapidly accelerated by the advent of genomic
 technologies, which enable detailed quantification of bacterial ecological
@@ -94,7 +79,7 @@ bacteria are differentially abundant.
     of an observed sample that belongs to a group descending from that branch.
     The relative widths of the blue and green components within a branch
     corresponds to the relative frequency of that evolutionary group when
-    comparing samples from either group. Differential abundance problem is to
+    comparing samples from either group. The differential abundance problem is to
     find large branches in this tree whose descendants have very different
     abundances between the two groups -- these are large branches where the
     split between colors is not even.
@@ -125,7 +110,7 @@ the impact of antibiotic time courses or diet changes, for example.
     \label{fig:tree_differential_dynamics}}
 \end{figure}
 
-\subsection{Problem Abstraction}\label{problem-abstraction}
+\subsection{Problem abstraction}\label{problem-abstraction}
 
 To unify the tree-structured differential abundance and bacterial dynamics
 problems, we identify the data with a collection of random variables indexed by
@@ -176,7 +161,7 @@ coordinates challenges remain, mainly selecting scales for and ordering
 across the different coordinates, but the linking and focus-plus-context
 can still be employed this setting.
 
-\subsection{Background Literature and Solution Principles}
+\subsection{Background literature and solution principles}
 \label{background-literature-and-solution-principles}
 
 Now that we have specified the essential questions of interest, we survey some
@@ -274,7 +259,7 @@ providing a toolbox for generic types of visualization design. We believe that
 this narrow context within a broad ecosystem strikes a balance between
 problem-specificity and ease-of-use.
 
-\subsection{Specific Proposals}\label{specific-proposals}
+\subsection{Specific proposals}\label{specific-proposals}
 
 Our first proposed visualization technique is a minor modification of the DOI
 tree. The standard DOI tree definition does not have any notion of data defined
@@ -368,7 +353,7 @@ In problems of larger size, we recommend a preliminary filtering or aggregation
 step across nodes or, if the time series is smooth, across neighboring
 timepoints, in order to avoid these potential scaling difficulties.
 
-\subsection{Case Studies}\label{case-studies}
+\subsection{Case studies}\label{case-studies}
 
 We now delve into applications on real data. Our goals are to illustrate
 potential workflows that incorporate treelapse, describe the formulation of
@@ -399,8 +384,8 @@ which we have limited ourselves.
   issues. \label{problem-scaling}}
 \end{table}
 
-\subsubsection{Bacterial Dynamics of Antibiotics Time
-Courses}\label{bacterial-dynamics-of-antibiotics-time-courses}
+\subsubsection{Bacterial dynamics of antibiotics time
+courses}\label{bacterial-dynamics-of-antibiotics-time-courses}
 
 \citet{dethlefsen2008pervasive} investigated the effect of antibiotics on
 bacterial community composition from an ecological perspective. The study tracks
@@ -544,8 +529,8 @@ more variable estimate than the averages over the more prevalent phyla.
   via interactive visualization.}\label{fig:verrucomicrobiae}
 \end{figure}
 
-\subsubsection{Differential Bacterial Abundance and Preterm
-Births}\label{differential-bacterial-abundance-and-preterm-births}
+\subsubsection{Differential bacterial abundance and preterm
+births}\label{differential-bacterial-abundance-and-preterm-births}
 
 \citet{digiulio2015temporal}
 tracked the abundance of bacteria in the vaginal microbiome during
@@ -643,7 +628,7 @@ associated with preterm births.
 \label{fig:pretermpreterm}
 \end{figure}
 
-\subsubsection{Dynamics in Housing Prices}\label{zillow-study}
+\subsubsection{Dynamics in housing prices}\label{zillow-study}
 
 We next consider an application unrelated to the microbiome, but with relatively
 clear hierarchical structure. Our data are downloaded from Zillow and give the
@@ -766,8 +751,8 @@ substantial decision-making.
   different types of visual comparisons.}\label{fig:zillowsf}
 \end{figure}
 
-\subsubsection{Sources of Variation in Bikesharing
-Demand}\label{bikesharing-study}
+\subsubsection{Sources of variation in bikesharing
+demand}\label{bikesharing-study}
 
 Our next example is a study in bikesharing demand, included as an example of
 analyzing collections of time series when there is no obvious hierarchical
@@ -916,7 +901,7 @@ analysis workflow, we imagine the analyst applying interactive
 visualization and modeling techniques in an iterative, nonlinear
 fashion, in the spirit of \citep{de2003visual}.
 
-\subsubsection{Hierarchically Clustering the Global Patterns Data}\label{global_patterns}
+\subsubsection{Hierarchically clustering the global patterns data}\label{global_patterns}
 
 Each of the timebox tree and treebox examples presented so far have
 focused on data with a clear time component. We note however that these
@@ -970,7 +955,7 @@ and skin, and looking up taxonomic groups associated with the distinguishing
 bacteria confirms this. For example, many of the species with high
 abundances in the left figure come from order Oceanospirillales.
 
-\subsubsection{Inspecting Confirmatory Analysis}\label{structssi}
+\subsubsection{Inspecting confirmatory analysis}\label{structssi}
 
 In addition to facilitating exploratory study, treelapse has potential
 value as a device for inspecting confirmatory analysis. We provide an
@@ -1055,7 +1040,7 @@ interactive plots in Rmarkdown pages and Shiny apps
 \citep{vaidyanathan2014htmlwidgets}. All code and many examples are available on
 our github page: \url{https://github.com/krisrs1128/mvarVis}.
 
-\subsection{Problem Motivation}
+\subsection{Problem motivation}
 
 The analysis of complex data sets often requires a dimensionality reduction
 step. Common methods for dimensionality reduction or feature extraction are
