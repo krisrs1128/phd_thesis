@@ -33,7 +33,7 @@ The key contributions of the current study are,
   principles from the data visualization community.
 \item The implementation of these proposals in a publicly available R package.
 \item The illustration of the wide reach of hierarchical data visualization,
-  through case studies in both scientific and societal contexts.
+  through case studies iSJ n both scientific and societal contexts.
 \end{itemize}
 
 This chapter is organized as follows. First, we describe our motivating application
@@ -170,7 +170,7 @@ the core difficulty is high-dimensionality, it should be no surprise that the
 techniques we adapt come from the literature on high-dimensional data
 visualization, which has enjoyed rapid progress in the last 25 years. Modern
 research in this domain develops abstractions and taxonomies for guiding
-visualization designs so that they most effectively communicates properties of
+visualization designs so that they most effectively communicate properties of
 the data to their intended audience. A major push in this body of work explores
 the potential for interactivity to improve many stages of the data analysis
 process, from preliminary data preparation, to refinement and navigation across
@@ -181,12 +181,12 @@ from high-dimensional data \citep{de2003visual}.
 
 The problem structures most relevant to our study are tree and temporal
 structure, and the visualization community has various ways of reasoning about
-these data, see \citep{graham2010survey, aigner2011visualization} for detailed
-surveys. From this literature, our approach is most directly informed by the
-focus-plus context and linking principles, which we briefly review here. The
-focus-plus-context principle is that large collections of visual elements can be
-studied at multiple scales, by simultaneously focusing" on a few elements of
-interest and maintaining the ``context'' of the coarser-scale background. A
+these data, see \cite{graham2010survey} and \cite{aigner2011visualization} for
+detailed surveys. From this literature, our approach is most directly informed
+by the focus-plus-context and linking principles, which we briefly review here.
+The focus-plus-context principle is that large collections of visual elements
+can be studied at multiple scales, by simultaneously ``focusing'' on a few elements
+of interest and maintaining the ``context'' of the coarser-scale background. A
 simple example of this idea is to include a search box that highlights matching
 samples (focus) and mutes the rest (context). Two more sophisticated methods
 anchored in this idea are timeboxes and Degree-of-Interest (DOI) trees; both are
@@ -276,7 +276,7 @@ tree-structured differential abundance problem, which we call the DOI sankey.
 
 In the DOI sankey, we split each edge in the DOI Tree across different groups.
 For example, suppose we have the average counts for treatment and control groups
-at each tree node. Every edge in the tree is split into two colors\footnote{We
+at each tree node. Every edge in the tree is split into multiple colors\footnote{We
   use the colorbrewer palette to facilitate readability
   \citep{brewer2003colorbrewer}}, with relative widths of the different colors
 reflecting differences in sizes for the two groups.
@@ -338,7 +338,7 @@ manipulation of a brush led to a deteriorated user experience\footnote{However,
 To be practically useful, the resulting visualizations must respond fluidly to
 user interaction. As the data increase in scale, this fluidity can deteriorate
 for two reasons. First, rendering many SVG elements in a framework like D3 is
-costly\citep{johnson2008scalability}. While it is possible to use alternatives
+costly \citep{johnson2008scalability}. While it is possible to use alternatives
 -- HTML5's Canvas, for example -- it is often more challenging to implement
 complex interactive behavior through them. Second, some of the dynamic queries
 require a search over a many elements. These limitations are most pronounced in
@@ -415,7 +415,7 @@ Two more subtle effects are also suggested from this view,
   \centering
   \includegraphics[width=375px]{figure/treelapse/annotated_antibiotic_overview}
   \caption{Here we display the primary timebox tree view of the antibiotics data
-    set from \citep{dethlefsen2008pervasive}, annotated with the main components of the
+    set from \cite{dethlefsen2008pervasive}, annotated with the main components of the
     visualization. The tree at the top is a taxonomic tree of all the bacteria
     contained within the sample, and it is visually linked to the time series at
     the bottom: each node in the tree corresponds to a path among the time series.
@@ -758,12 +758,13 @@ Our next example is a study in bikesharing demand, included as an example of
 analyzing collections of time series when there is no obvious hierarchical
 structure a priori. The data are available at the UCI Repository and were
 originally collected by a Washington D.C.-based bikesharing system for use in a
-Kaggle prediction competition. A link is provided in the supplementary
-materials. The data are hourly measurements of bike demand, aggregated across
-all bikesharing stations, over two years, along with supplemental weather data.
-In the competition, participants were asked to predict the hourly demand on a
-held-out test set. Here, we adopt a descriptive view instead, attempting to
-characterize factors associated with variation in bikesharing demand.
+Kaggle prediction competition, available at
+\url{https://archive.ics.uci.edu/ml/datasets/bike+sharing+dataset}. The data are
+hourly measurements of bike demand, aggregated across all bikesharing stations,
+over two years, along with supplemental weather data. In the competition,
+participants were asked to predict the hourly demand on a held-out test set.
+Here, we adopt a descriptive view instead, attempting to characterize factors
+associated with variation in bikesharing demand.
 
 Like the Zillow home prices application, we study this problem as one of
 describing a large collection of related time series. Here, we consider
@@ -799,17 +800,16 @@ second year.
 }
 
 \caption{The two peaks at rush hour distinguish weekday series from the rest.
-  through the timebox tree view. The display is the same type of timebox tree
-  view introduced in Figure \ref{fig:antibioticoverview}, but applied to the
-  bikesharing data, where the time axis represents the time of day and the
-  $y$-axis gives bikesharing demand. Each series is the bikesharing demand for a
-  single day, over the course of two years. The tree now corresponds to the
-  regression tree generated by predicting demand at 8am using supplementary
-  data. Two brushes are introduced to highlight the double peaks corresponding
-  to rush hours on weekdays. We see that although hierarchical structure was not
-  present immediately in the bikesharing data, it is useful to introduce and
-  interpret such structure by combining regression and visualization
-  methodology.
+  The display is the same type of timebox tree view introduced in Figure
+  \ref{fig:antibioticoverview}, but applied to the bikesharing data, where the
+  time axis represents the time of day and the $y$-axis gives bikesharing
+  demand. Each series is the bikesharing demand for a single day, over the
+  course of two years. The tree now corresponds to the regression tree generated
+  by predicting demand at 8am using supplementary data. Two brushes are
+  introduced to highlight the double peaks corresponding to rush hours on
+  weekdays. We see that although hierarchical structure was not present
+  immediately in the bikesharing data, it is useful to introduce and interpret
+  such structure by combining regression and visualization methodology.
 }\label{fig:working}
 \end{figure}
 
@@ -828,7 +828,7 @@ second year.
   \centering
   \includegraphics[width=375px]{figure/treelapse/weekday_2011}
     \caption{Weekday demand appears larger in 2012 than 2011 -- compare with Figure 
-      \ref{fig:weekday2012}. Here, a brushes are introduced over the tree to see the
+      \ref{fig:weekday2012}. Here, brushes are introduced over the tree to see the
       series associated with a particular split point. The red nodes are the results
       of searches over the two nodes that are children of this split point. The fact
       that the \texttt{yr>=0.5} selected line is larger than the \texttt{yr<0.5}
@@ -931,7 +931,7 @@ parallel coordinates view of the \(\text{asinh}\) transformed taxa.
     \includegraphics[width=225px]{figure/treelapse/gp_cluster2}
 }
 
-\caption{An application to the Global Patterns demonstrates how linking in
+\caption{An application to the Global Patterns data demonstrates how linking in
   treelapse can be applied to combine hierarchical clustering and parallel
   coordinates views. Each panel represents a different subtree cluster within
   this data set, as indicated by the different locations for the tree brushes.
@@ -1048,12 +1048,12 @@ principal component analysis (PCA), canonical correlation analysis (CCA),
 nonlinear multidimensional scaling (NMDS). While there are a number of R
 packages for multivariate analysis, they often have a steep learning curve and
 rarely share common code conventions. Further, data input and output formats
-oftne vary largely from one package to the other. Finally, most packages
+often vary largely from one package to the other. Finally, most packages
 generate static results, an unnecessary limitation, in light of increasingly
 accessible interactive visualization tools in the data analysis community.
 
 mvarVis unifies different ways of performing multivariate analysis and
-facilitates the process of generating visualizations. It is build on top of the
+facilitates the process of generating visualizations. It is built on top of the
 existing statistical packages, but adds a a layer of interactivity to the
 resulting visualizations. With mvarVis, the user can easily add and display
 supplemental information. Additionally, the package incorporates a bootstrapping
@@ -1162,7 +1162,7 @@ All steps are done automatically with a call to the
 \subsection{Examples}
 
 Example output from mvarVis is given in Figures \ref{fig:wine_interactive} and
-\ref{fig:hmp_bootstrap}. Figure \ref{fig:wine_interaction} gives a screenshot of
+\ref{fig:hmp_bootstrap}. Figure \ref{fig:wine_interactive} gives a screenshot of
 an interactive display to an \texttt{mvarTable}, using the pedagogical wine data
 set from \cite{le2008factominer}, which provides quantitative measurements from
 wine tasters about drinks -- acidity and sweetness, for example -- from
@@ -1186,7 +1186,7 @@ on the mvarVis website.
 Figure \ref{fig:hmp_bootstrap} gives example bootstrap ordination results on a
 real microbiome data set. By applying this procedure, it becomes clear that the
 positions of the skin samples are more variable than those for, say, the gut or
-urogenital tract. This may be a result of differential sequence depths (or true
+urogenital tracts. This may be a result of differential sequence depths (or true
 bacterial population levels) across different types of sites. Note that without
 the bootstrapping step, this effect would not be clear.
 
@@ -1264,7 +1264,7 @@ suggests a gradient across samples.
   }
 \end{figure}
 
-Slight modifications to this display can enable more even sophisticated visual
+Slight modifications to this display can enable more sophisticated visual
 comparisons. First, it is often of interest to compare two or more clusters to
 one another. To this end, we allow the user to fix the view created by hovering
 over one node, then layer on new views created by hovering over other nodes.
@@ -1306,7 +1306,7 @@ antibiotics data of \cite{dethlefsen2011incomplete}. This study investigated the
 effects of antibiotics on the microbiome, especially as it relates to
 instability and resilience. About 50 samples were collected longitudinally for
 three subjects, and their trajectories of bacterial abundances were found using
-16s sequencing.
+16S sequencing.
 
 Here we cluster species, using their abundances across individuals and
 timepoints as features. We group species according to their taxonomic families.
@@ -1315,7 +1315,7 @@ Our goal is to succinctly represent the essential trajectories that are visible
 in the data, with the ultimate goal of interpreting these trajectories in
 relation to theories of ecological dynamics.
 
-An example display from centroid view applied to this data is given in Figure
+An example display from centroidview applied to this data is given in Figure
 \ref{fig:centroidview_differential}. Evidently, the orange and green subtrees
 differentiate between species with differential responses to antibiotics in the
 first and third subjects. In particular, for the first subject, the green
@@ -1346,11 +1346,11 @@ Lachnospiraceae, while the green subtree mostly contains Ruminococcaceae.
 \label{conclusion}
 
 Here, we have reviewed some fundamental principles of data visualization and
-described their implementation in a new treelapse package. Further, we have
+described their implementation in new R packages. Further, we have
 provided examples of the practical usefulness of these principles in real-world
 data analysis situations.
 
-This package has only developed basic ideas, and there are a number of
+These packages have only developed basic ideas, and there are a number of
 potentially useful extensions worth exploring. For example, we have not
 considered the principle of arrangement in our visualizations
 \citep{buja1996interactive}, though many of our conclusions were based on
@@ -1368,7 +1368,7 @@ community to construct novel linked, interactive graphics with minimal effort.
 Finally, formal quantitative assessments of interface design through a user
 study could guide changes that improve the experience of practitioners.
 
-In summary, we have built an easily accessible R package for visualization
+In summary, we have built easily accessible R packages for visualization
 techniques in a very specific methodology problem -- analysis of differential
 abundance and dynamics in hierarchically structured data -- that appears in a
 variety of application domains. We have leveraged a link between R and D3
