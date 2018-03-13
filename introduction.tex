@@ -15,9 +15,13 @@ communities have arrived at many similar principles for guiding this reduction.
 For example, an information-dense figure describes a large collection of numbers
 in a small physical space on the page \citep{tufte2014visual}, while a
 sufficient statistic encapsulates everything about a data set necessary to
-describe a data generating mechanism. This thesis blends ideas from both
-communities to make the representation of latent structure more accessible and
-automatic for the practicing data analyst.
+describe a data generating mechanism. Similarly, hierarchical modeling, in which
+many parameters share information via a hyperprior, has a natural counterpart in
+the small-multiples principle, in which many versions of a figure are created,
+for small units drawn from some population \citep{gelman2004exploratory}. This
+thesis blends ideas from both the modeling and visualization communities to make
+the representation of latent structure more accessible and automatic for the
+practicing data analyst.
 
 \begin{figure}
   \centering
@@ -57,22 +61,47 @@ ideas developed in statistics and data visualization.
 
 In more detail, Chapter \ref{ch:text_analysis} compares several probabilistic
 models for representing longitudinal data, relying on simulations and a case
-study. Chapter \ref{ch:interactive_vis} introduces three new data visualization
+study. In particular, an analogy between microbiome and document modeling is
+developed, and structured models for text are applied and assessed on simulated
+and real microbiome data. Further, steps for visual characterization of fitted
+parameters and formal quantitative diagnostics are illustrated.
+
+Chapter \ref{ch:interactive_vis} introduces three new data visualization
 packages, \texttt{treelapse}, \texttt{centroidview}, and \texttt{mvarVis}. Each
 is designed with a particular visual comparison in mind -- for example,
 \texttt{treelapse} and \texttt{centroidview} address the tree-structured
 differential abundance and dynamics problems, while \texttt{mvarVis} simplifies
-comparisons between ordinations. Chapter \ref{ch:multitable} is focused on the
-problem of integrating multiple data sources into a unified representation of
-between-table covariation. This situation is frequently encountered in modern
-microbiome studies, where participants provide samples\footnote{Throughout this
-  thesis, we use the term ``sample'' to refer to a physical measurement,
-  reflecting the usage of the term in biological applications. They need not be
-  samples from some distribution, in the statistical sense.} to be processed by
-several 'omics technologies at once. Finally, chapter \ref{ch:dynamic_regimes}
-reviews literature on discovering latent dynamic regimes in time series. This
-type of reduction is relevant in studies of stability and change in the
-microbiome, a topic of ecological and medical interest.
+comparisons between ordinations. These packages are designed with models for
+latent structure in mind, and they can guide both model design and evaluation.
+Each package has an interactive component, and we find this interactivity
+useful for drawing attention to different views of the data with minimal effort.
+
+Chapter \ref{ch:multitable} is focused on the problem of integrating multiple
+data sources into a unified representation of between-table covariation. This
+situation is frequently encountered in modern microbiome studies, where
+participants provide samples\footnote{Throughout this thesis, we use the term
+  ``sample'' to refer to a physical measurement, reflecting the usage of the
+  term in biological applications. They need not be samples from some
+  distribution, in the statistical sense.} to be processed by several 'omics
+technologies at once. We intentionally focus our efforts on surveying and
+providing code / visualizations of existing methodology, rather than embarking
+on new algorithm design. Our basic premise is that the most substantial barrier
+to effective data analysis in applied fields is not the rate at which good
+algorithms can be designed and implemented. Rather, the essential difficulty
+stems from a failure to clearly articulate and compare existing methods. In a
+way, this work work is the computational descendant of classical optimality and
+efficiency comparisons: Given a morass of potential analyses in a practical
+problem, pave a clear and well-justified path forwards.
+
+In a similar spirit, chapter \ref{ch:dynamic_regimes} reviews literature on
+discovering latent dynamic regimes in time series. This type of reduction is
+relevant in studies of stability and change in the microbiome, a topic of
+ecological and medical interest. We begin our survey with heuristic, but
+relatively inflexible approaches, and then alternately consider techniques for
+explicitly accounting for different types of structure -- counts, shared
+changepoints, and zero-inflation, for example. Again, we place emphasis on
+visualization, evaluation, and the statistical and computational trade-offs
+implicit in different modeling approaches.
 
 A key component of the scholarship in this thesis takes the form of computer
 code, all of which is publicly available, with links appearing within each
