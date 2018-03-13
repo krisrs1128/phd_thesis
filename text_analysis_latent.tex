@@ -61,7 +61,7 @@ the microbiome remains an active area of current research.
 
 \section{Methods}
 
-We review a few of the statistical modeling techniques that are the focus of
+We review some of the statistical modeling techniques that are the focus of
 this work. Many of these techniques have been borrowed from text analysis,
 thinking of the bacterial counts matrix as a biological analog of the
 document-term matrix. The idea of transferring these techniques to the
@@ -228,7 +228,7 @@ of low rank matrices, $X \approx \Theta B^{T}$, where now the only constraints
 on $\Theta$ and $B$ are that $\Theta \in \reals_{+}^{D \times K}$ and $B \in
 \reals_{+}^{V \times K}$. This is the point of departure for a variety of algorithms
 in the Nonnegative Matrix Factorization (NMF) literature
-\citep{wang2013nonnegative}
+\citep{wang2013nonnegative}.
 
 We focus on the Gamma-Poisson factorization model (GaP) \citep{canny2004gap}
 which posits the hierarchical model
@@ -257,6 +257,9 @@ these parameters.
     $v^{th}$ word, respectively. The angle between and length of these vectors
     determines the expected count of term $v$ in document
     $i$, since $a^T b = \|a\|\|b\| \cos\left(\text{angle}\left(a, b\right)\right)$.
+    This geometric view lies behind more sophisticated versions of NMF as well,
+    for instance, the nonparametric factorization approach of
+    \citep{ren2017bayesian}.
     \label{fig:nmf_plate_annotated} }
 \end{figure}
 
@@ -264,7 +267,7 @@ In our simulation studies, we also consider a slight variant of this model,
 similar to the proposal of \citep{romero2014composition}, which independently
 sends entries of $X$ to zero with probability $p_{0}$. In our experiments, we
 assume that this zero-inflation probability is known. This procedure is denoted
-by Z-NMF. Throughout, we use the probabilsitic programming language Stan
+by Z-NMF. Throughout, we use the probabilistic programming language Stan
 \citep{carpenter2016stan}.
 
 \subsection{Posterior Predictive Checks}
