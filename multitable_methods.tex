@@ -3,7 +3,7 @@
 
 The simultaneous study of multiple measurement types is a frequently encountered
 problem in practical data analysis. It is especially common in microbiome
-research, where several sources of data -- for example, 16s, metagenomic,
+research, where several sources of data -- for example, 16S, metagenomic,
 metabolomic, or transcriptomic data -- can be collected on the same physical
 samples \citep{Franzosa2015, McHardy2013}. There has been a proliferation of
 proposals for analyzing such multitable microbiome data, as is often the case
@@ -11,19 +11,20 @@ when new data sources become more readily available, facilitating inquiry into
 new types of scientific questions \citep{Fukuyama2017, Rahnavard2017,
   Chaudhary2017, Chalise2017}.
 
-However, stepping back from the rush of new methods for multitable analysis in
+However, stepping back from the rush for new methods for multitable analysis in
 the microbiome literature, it is worthwhile to recognize the broader landscape
 of multitable methods, as they have been relevant in problem domains ranging
 from economics \citep{hannan1967canonical} to robotics
-\citep{vlassis2000supervised} to computational biology \citep{gomez2014data}. Of
-course, there is no unique optimal algorithm to use across domains -- different
-instances of the multitable problem possess specific structure or variation
-that are worth incorporating in methodology.
+\citep{vlassis2000supervised} to genomics \citep{gomez2014data}. In different
+contexts, these techniques are called data integration, multi-omic, and
+multitask methods, for example. Of course, there is no unique optimal algorithm
+to use across domains -- different instances of the multitable problem possess
+specific structure or variation that are worth incorporating in methodology.
 
 Our purpose here is not to develop new algorithms, but rather to (1) distill the
 relevant themes across different analysis approaches and (2) provide concrete
 workflows for approaching analysis, as a function of ultimate analysis goals and
-data characteristics (heterogeneity, dimensionality, sparsity, ...) of the data.
+data characteristics (heterogeneity, dimensionality, sparsity, ...).
 Towards the second goal, we have made code for all analysis and figures
 available online at
 \url{https://github.com/krisrs1128/well\_microbiome\_expers}.
@@ -48,25 +49,25 @@ is focused on the relationships between various indicators of wellness
 \citep{wellchina}. In this study, 1969 individuals\footnote{Though sampling is
   still ongoing.} underwent clinical examinations, filled out wellness surveys
 (covering topics such as exercise, sleep, diet, and mental health, for example),
-and provided stool samples, used for 16s sequencing and metabolomic analysis. To
-date, 16s sequencing data is available for 221 of these participants. Evidently,
+and provided stool samples, used for 16S sequencing and metabolomic analysis. To
+date, 16S sequencing data is available for 221 of these participants. Evidently,
 various interesting relational questions can be investigated using this data
 source.
 
 For the purpose of illustration, we focus on one relatively narrow question that
 can be addressed using this data: How is the distribution of lean and fat mass
 across the body related to patterns of microbial abundance? The measurement
-types most relevant in this analysis are DEXA scans and 16s sequencing abundances.
+types most relevant in this analysis are DEXA scans and 16S sequencing abundances.
 DEXA scans use relative X-ray absorption to gauge the amount of lean and fat body
 mass within a region of the body being scanned. We have access to these
 lean and fat body mass measurements at several body sites -- arms, legs, trunk,
 etc. -- along with related body type variables, like height, age, and android
-and gynoid fat measurements. In total, there are 36 of these variables. 16s
-sequencing is a technology for gauging the abundance of differnet bacterial
-species in the gut by counting the alignments of reads to the 16s gene, a
+and gynoid fat measurements. In total, there are 36 of these variables. 16S
+sequencing is a technology for gauging the abundance of different bacterial
+species in the gut by counting the alignments of reads to the 16S gene, a
 component of all bacterial genomes with enough variation to allow discimination
 between different individual species. We have counts associated with 2565
-species across 181 genuses, though the vast majority are present in low
+species across 181 genera, though the vast majority are present in low
 abundances.
 
 This question of the relationship between lean and fat mass distribution
@@ -77,7 +78,7 @@ individual's Body Mass Index (BMI) \citep{ley2006microbial, turnbaugh2009core,
 often more related to underlying biological mechanisms than overall body mass
 \citep{matsuzawa2008role}, and since this distribution is mediated by specific
 metabolic pathways, there is reason to suspect that a joint analysis of DEXA and
-16s microbial abundance data might yield a more complete view of the
+16S microbial abundance data might yield a more complete view of the
 relationship between the microbiome and body type.
 
 \section{Classical multivariate methods}
@@ -98,14 +99,14 @@ data analysis problem was to relate prices of groups of commodities
 \citep{hotelling1936relations}. There are two notable aspects of data analysis
 in this classical paradigm which no longer hold in modern statistics,
 \begin{itemize}
-  \item Even when many samples could be collected, there were typically only a
-    few features for each sample, and it was straightforwards to study all of
-    them simultaneously. It is now possible to automatically collect a large
-    number of features for each sample.
+  \item Even when many samples could be collected, there were typically
+    only a few features for each samples, and it was straightforwards to study
+    all of them simultaneously. It is now possible to automatically collect a
+    large number of features for each observation.
   \item Before electronic computers had been invented, it was important that all
     statistical quantities be easy to calculate, typically necessitating
     analytical formulas for parameter estimates. This is no longer an important
-    limitation in an environment due to modern computation.
+    limitation due to modern computation.
 \end{itemize}
 
 These changes have driven the development of high-dimensional methods and
@@ -234,12 +235,12 @@ Figure \ref{fig:loadings} and \ref{fig:scores_android_fm} illustrate this
 approach on body composition and bacterial abundance data from the WELL-China
 study. Note that we have subsetted to only women, since men and women have very
 different body compositions, and we have slightly more data for women. Further,
-the 16s data have been variance stabilized according the methodology proposed in
+the 16S data have been variance stabilized according the methodology proposed in
 \citep{Anders2010} and filtered to only those species that have count $\geq 5$
 in at least 7\% of samples.
 
 Figure \ref{fig:loadings} displays the loadings associated with this
-concatenated PCA approach, where body composition (36 columns) and 16s
+concatenated PCA approach, where body composition (36 columns) and 16S
 abundances (372 columns) were combined into one dataset (408 columns). Columns
 associated with bacterial species are displayed as points, shaded by taxonomic
 family, while columns associated with body composition variables are labeled
@@ -248,9 +249,8 @@ with text.
 Most body composition variables lie on the top right, in a direction
 approximately orthogonal to the main direction of variation among species.
 Columns that are highly correlated -- e.g., right (R) and left (L) leg fat mass
-(FM) -- have loadings nearly equal to one another. Age appears in generally
-negatively correlated with the other variables. Among species, the most notable
-pattern is the concentration of Ruminococcaceae on the right.
+(FM) -- have loadings nearly equal to one another. Among species, the most
+notable pattern is the concentration of Ruminococcaceae on the right.
 
 To identify relationships between species and body composition variables, it
 would be of interest to isolate those species with large contributions along the
@@ -318,10 +318,10 @@ methods of subsequent sections.
 \label{subsec:cca}
 
 CCA is a close relative of PCA, designed to compare sets of features across
-tables. Like PCA, it provides low-dimensional representations of samples, but it
-also allows comparisons at the table level. Suppose for now that there are only
-two tables of interest, $X \in \reals^{n \times p_{1}}$ and $Y \in \reals^{n
-  \times p_{2}}$. Let $\hat{\Sigma}_{XX}, \hat{\Sigma}_{YY}$, and
+tables. Like PCA, it provides low-dimensional representations of observations,
+but it also allows comparisons at the table level. Suppose for now that there
+are only two tables of interest, $X \in \reals^{n \times p_{1}}$ and $Y \in
+\reals^{n \times p_{2}}$. Let $\hat{\Sigma}_{XX}, \hat{\Sigma}_{YY}$, and
 $\hat{\Sigma}_{XY}$ be the associated covariance estimates. Take the SVD,
 $\hat{\Sigma}_{XX}^{-\frac{1}{2}}\hat{\Sigma}_{XY}\hat{\Sigma}_{YY}^{-\frac{1}{2}}
 = \tilde{U}D\tilde{V}^{T}$. The canonical correlation directions associated with
@@ -517,7 +517,7 @@ pairs of scores for each individual sample are drawn with small links. Since
 most links are relatively short, linear combinations of the two tables could be
 found that optimized the objective -- indeed, the top two canonical correlations
 are 0.968 and 0.957. However, some caution is necessary here, and a more honest
-evaluation would be based scores obtained by projecting new samples onto the
+evaluation would be based on scores obtained by projecting new samples onto the
 original CCA directions. This is especially important in this nearly
 high-dimensional setting, where covariance estimation may be unreliable.
 
@@ -529,7 +529,7 @@ Ruminococcaceae difference, respectively, as in Figures
 \ref{fig:scores_android_fm} and \ref{fig:cca_scores_rl_ratio}. The association
 between these variables and the sample positions is not as strong as when
 performing PCA on the combined table. This is to be expected, however, as PCA
-maximizes variance without any thought to on covariance, and the body
+maximizes variance without any thought to covariance, and the body
 composition table alone has a large portion of its variance related to android
 fat mass.
 
@@ -635,7 +635,7 @@ and CCA that is responsible for this difference.
 MFA gives an alternative approach to producing scores and relating features
 across multiple tables \citep{pages2014multiple}. It can be understood as a
 refined version of the concatenated PCA described in Section \ref{subsec:pca}
-that res tables in a way that prevents any one table from dominating the
+that reweights tables in a way that prevents any one table from dominating the
 resulting ordination Specifically, MFA is a concatenated PCA on the matrix
 \begin{align*}
 X := \left[\frac{1}{\lambda_{1}\left(X^{(1)}\right)}X^{(1)} \vert \dots \vert
@@ -835,18 +835,18 @@ quality of within-table approximations deteriorates.
 
 Partial Triadic Analysis (PTA) gives an approach to working with multitable data
 when each table has the same dimension, $p_1 = p_2$
-\citep{thioulouse2011simultaneous}. Specifically, it gives a way of analyzing
-data of the form $\left(X_{\cdot\cdot l}\right)_{l = 1}^{L}$, where each
-$X_{\cdot\cdot l} \in \reals^{n \times p}$. This is called a data cube because
-it can also be written as a three-dimensional array $X \in \reals^{n \times p
-  \times L}$. We denote the $j^{th}$ feature measured on the $i^{th}$ sample in
-the $l^{th}$ table by $x_{ijl}$, and the slices over fixed $i$, $j$, and $l$ by
-$X_{i \cdot \cdot}$, $X_{\cdot j \cdot}$ and $X_{\cdot \cdot l}$. This type of
-data arises frequently in longitudinal data analysis, where the same features
-are collected for the same samples over a series of $L$ times. However, the
-actual ordering of the $L$ tables is not ever used by this method: if we
-scrambled the time ordering for $L$ tables, the algorithm's result would not
-change.
+\citep{leibovici1993facteurs, thioulouse2011simultaneous}. Specifically, it
+gives a way of analyzing data of the form $\left(X_{\cdot\cdot l}\right)_{l =
+  1}^{L}$, where each $X_{\cdot\cdot l} \in \reals^{n \times p}$. This is called
+a data cube because it can also be written as a three-dimensional array $X \in
+\reals^{n \times p \times L}$. We denote the $j^{th}$ feature measured on the
+$i^{th}$ sample in the $l^{th}$ table by $x_{ijl}$, and the slices over fixed
+$i$, $j$, and $l$ by $X_{i \cdot \cdot}$, $X_{\cdot j \cdot}$ and $X_{\cdot
+  \cdot l}$. This type of data arises frequently in longitudinal data analysis,
+where the same features are collected for the same samples over a series of $L$
+times. However, the actual ordering of the $L$ tables is not ever used by this
+method: if we scrambled the time ordering for $L$ tables, the algorithm's result
+would not change.
 
 The main idea in PTA is to divide the analysis into two steps,
 \begin{itemize}
@@ -1445,8 +1445,9 @@ In high-dimensional settings, sparsity is a desirable property, both for
 qualitative interpretability and statistical stability. A regression model using
 only a few features is easier to understand than one involving a linear
 combination of all possible features. Further, regularized models typically
-outperform their unregularized counterparts, and in fact, it is impossible to
-fit a unregularized linear regression when the number of features is greater
+outperform their unregularized counterparts in terms of both predictive accuracy
+and inferential power \citep{buhlmann2011statistics}. In fact, it is impossible
+to fit a unregularized linear regression when the number of features is greater
 than the number of samples.
 
 The Penalized Matrix Decomposition (PMD) is a general approach to adapting the
@@ -1870,12 +1871,11 @@ assume a correlation network between the $p_{2}$ tasks. This is denoted by $G =
 with a weight, $r\left(e\right)$, giving the correlation between the pair of
 responses.
 
-The graph-fused lasso idea is to estimate a coefficient matrix $B \in
-\reals^{p_{2} \times p_{1}}$ whose columns $\beta^{(r)}$ are the regression
-coefficients across tasks, but which have been pooled together, with the
-strength of the pooling depending on the separately computed strength of the
-relationship between tasks. Formally, $\hat{B}^{gf}$ is defined as the solution
-to the optimization,
+The graph-fused lasso estimates a coefficient matrix $B \in \reals^{p_{2} \times
+  p_{1}}$ whose columns $\beta^{(r)}$ are the regression coefficients across
+tasks, but which have been pooled together, with the strength of the pooling
+depending on the separately computed strength of the relationship between tasks.
+Formally, $\hat{B}^{gf}$ is defined as the solution to the optimization,
 \begin{align}
 \minimize_{B \in \reals^{p_{2} \times p_{1}}} \frac{1}{2}\|Y - XB\|_{F}^{2} +
 \lambda \|B\|_{1} + \gamma \sum_{e \in E} \sum_{j = 1}^{p_{2}}
@@ -2097,7 +2097,9 @@ prior $p_{\Phi}\left(\left(w^{(r)}\right)_{r = 1}^{p_{1}}\right)$.
   \item Drawing $w^{(r)} \sim \text{Lap}\left(0, \Phi\right)$ encourages sparse
     weights. Though not technically a part of the specification above, it is
     possible to put a similar prior on $S$ to induce sparsity on the shared
-    sources.
+    sources. This sparsity-inducing property can be understood by noting that
+    MAP estimation with a Laplace prior on a parameter is equivalent to maximum
+    likelihood with an $\ell^{1}$-penalty on that parameter.
   \item Drawing $w^{(r)} \sim DP\left(\alpha, G_{0}\right)$ has a similar effect
     as the clustered-regressions model, though now the number of clusters need
     not be explicitly specified in advance\footnote{The concentration parameter
@@ -2203,18 +2205,26 @@ of these methods is given in Table \ref{tab:methods_comparison}.
 \centering
 \begin{tabularx}{16cm}{p{2cm}Xp{8cm}}
 \textbf{Property} & \textbf{Algorithms} & \textbf{Consequence} \\
+\hline
 Analytical solution & Concat. PCA, CCA, CoIA, MFA, PTA, Statico / Costatis & Methods with analytical solutions generally run much faster than those that require iterative updates, optimization, or Monte Carlo sampling. They tend to be restricted to more classical settings, however. \\
+\hline
 Require covariance estimate & Concat. PCA, CCA, CoIA, MFA, PTA, Statico / Costatis & Methods that require estimates of covariance matrices cannot be applied to data with more variables than samples, and become unstable in high-dimensional settings. \\
+\hline
 Sparsity & SPLS, Graph-Fused Lasso, Graph-Fused Lasso & Encouraging sparsity on scores or loadings can result in more interpretable, results for high-dimensional data sets. These methods provide automatic variable selection in the multitable analysis problem. \\
+\hline
 Tuning parameters &
   \textit{Sparsity}: Graph-Fused Lasso, PMD, SPLS \newline
   \textit{Number of Factors}: PCA-IV, Red. Rank Regression, Mixed-Membership CCA \newline
   \textit{Prior Parameters}: Mixed-Membership CCA, Bayesian Multitask Regression \newline
   \textit{Kernel}: KCCA & 
   Methods with many tuning parameters are often more expressive than those without any, since it makes it possible to adapt to different degrees of model complexity. However, in the absence of automatic tuning strategies, these methods are typically more difficult to use effectively. \\
+  \hline
 Probabilistic & Mixed-Membership CCA, Bayesian Multitask Regression & Probabilistic techniques provide estimates of uncertainty, along with representations of cross-table covariation. This comes at the cost of more involved computation and difficulty in assessing convergence. \\
+\hline
 Not Normal or Nonlinear & KCCA, CCpNA, Mixed-Membership CCA, Bayesian Multitask Regression & When data are not normal (and are difficult to transform to normality) or there are sources of nonlinear covariation across tables, it can be beneficial to directly model this structure. KCCA allows the most general types of nonlinearity, while the probabilistic methods are suited to specific count-structure. \\
+\hline
 \textgreater 2 Tables & Concat. PCA, CCA, MFA, PMD, KCCA & Methods that allow more than two tables are applicable in a wider range of multitable problems. Note these are a subset of the cross-table symmetric methods. \\
+\hline
 Cross-Table Symmetry & Concat. PCA, CCA, CoIA, Statico / Costatis, MFA, PMD, KCCA & Cross-table symmetry refers to the idea that some methods don't need a supervised or multitask setup, where one table contains response variable and the other requires predictors. The results of these methods do not change when the two tables are swapped in the method input. \\
 \end{tabularx}
 \caption{A high-level comparison of the multitable analysis methods discussed in

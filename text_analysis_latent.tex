@@ -4,7 +4,7 @@
 The human microbiome is a complex ecological system, and describing its
 structure and function under different environmental conditions is important
 from both basic scientific and medical perspectives. Viewed through a
-biostatistical lens, many microbiome analysis goals can be formulated as latent
+biostatistical lens, many microbiome analyses can be formulated as latent
 variable modeling problems. However, although probabilistic latent variable
 models are a cornerstone of modern unsupervised learning, they are rarely
 applied in the context of microbiome data analysis, in spite of the
@@ -13,8 +13,8 @@ through such models. We explore the application of probabilistic latent variable
 models to microbiome data, with a focus on Latent Dirichlet Allocation,
 Nonnegative Matrix Factorization, and Dynamic Unigram models. To develop
 guidelines for when different methods are appropriate, we perform a simulation
-study. We further illustrate and compare these techniques using the data
-of \cite{dethlefsen2011incomplete}, a study on the effects of antibiotics on
+study. We further illustrate and compare these techniques using the data of
+\cite{dethlefsen2011incomplete}, a study on the effects of antibiotics on
 bacterial community composition. Code and data for all simulations and case
 studies are available publicly.
 
@@ -40,14 +40,14 @@ high-dimensional regression.
 Towards phylogenetically-informed dimensionality reduction,
 \cite{chen2013structure} applied a structured regularization penalty in sparse
 CCA to incorporate phylogenetic information, encouraging scores for similar
-species to be placed close to one another. A similar effect was obtained by
+species to be placed close to one another. A similar effect can be obtained by
 placing an appropriate prior in a Bayesian model, as explored in
 \cite{fukuyama2017adaptive}. By varying the strength of the prior, it is
 possible to encourage different degrees of smoothness with respect to phylogeny,
 and Empirical Bayes estimation allows for a certain type of adaptivity.
 
 In addition to dimensionality reduction, high-dimensional classification is
-popular in the microbiome literature. Often interesting species can be
+popular in the microbiome literature. Often, interesting species can be
 identified by searching for important features in models that predict sample
 characteristics -- treatment vs. control, for example -- from species
 abundances. \cite{segata2011metagenomic} provided an approach for accounting for
@@ -61,7 +61,7 @@ the microbiome remains an active area of current research.
 
 \section{Methods}
 
-We review a few of the statistical modeling techniques that are the focus of
+We review some of the statistical modeling techniques that are the focus of
 this work. Many of these techniques have been borrowed from text analysis,
 thinking of the bacterial counts matrix as a biological analog of the
 document-term matrix. The idea of transferring these techniques to the
@@ -92,10 +92,11 @@ up on side $k$. Conditional on the selected topic, all words are drawn
 independently from the probabilites associated with the selected topic.
 
 More formally, represent the topic for the $d^{th}$ document by $z_{d} \in \{1,
-\dots, K\}$ and the term in the $n_{th}$ word of this document by $w_{dn}$.
+\dots, K\}$ and the term in the $n^{th}$ word of this document by $w_{dn}$.
 Suppose the $k^{th}$ topic places weight $\beta_{vk}$ on the $v^{th}$ term, so
-that $\beta_{k} \in \simplex^{V - 1}$. Suppose there are $N_{d}$ words in the
-$d^{th}$ document. Then, the generative mechanism for the observed data set is
+that $\beta_{k} \in \simplex^{V - 1}$, the $V$-dimensional simplex. Suppose
+there are $N_{d}$ words in the $d^{th}$ document. Then, the generative mechanism
+for the observed data set is
 \begin{align*}
   w_{dn} \vert \left(\beta_{k}\right)_{k = 1}^{K}, z_{d} &\overset{iid}{\sim}\Mult\left(1, \beta_{z_{d}}\right) \text{ for } d = 1, \dots, D \text{ and } n = 1, \dots, N_{d} \\
   z_{d} \vert \theta &\overset{iid}{\sim} \Mult\left(1, \theta\right) \text{ for } d = 1, \dots, D \\
@@ -108,10 +109,10 @@ $\gamma$ as fixed parameters, it is possible to place priors on them as well.
 Geometrically, this model identifies each document with one of the $\beta_{k}$ on
 the $V$-dimensional simplex.
 
-In practice, interpretation revolves around the posterior topic memberships,
-$\Parg{z_{d} = k \vert \left(w_{dn}\right)}$, and probabilities,
-$\Parg{\beta_{kv}\vert \left(w_{dn}\right)}$. While these
-estimates can be useful in guiding scientific analysis \citep{nigam2000text,
+In practice, interpretation revolves around the posterior mixed-memberships,
+$\Parg{z_{d} = k \vert \left(w_{dn}\right)}$, and topic probabilities,
+$\Parg{\beta_{kv}\vert \left(w_{dn}\right)}$. While these estimates can be
+useful in guiding scientific analysis \citep{nigam2000text,
   holmes2012dirichlet}, the assumption that each document belongs completely to
 one topic is sometimes unnecessarily restrictive. For example, in learning a
 Dirichlet multinomial mixture model on a collection of newspaper articles, we
@@ -131,7 +132,7 @@ additional flexibility in microbiome analysis.
 We use the same notation as before, but instead of fixing a global $\theta$
 parameter, let $\theta_{d} \in \simplex^{K - 1}$ represent the $d^{th}$
 document's mixture over the $K$ underlying topics. Represent the term in the
-$n_{th}$ word of this document by $w_{dn}$, and the associated topic by
+$n^{th}$ word of this document by $w_{dn}$, and the associated topic by
 $z_{dn}$. Suppose the $k^{th}$ topic places weight $\beta_{vk}$ on the $v^{th}$
 term, so that $\beta_{k} \in \simplex^{V - 1}$. Suppose there are $N_{d}$ words
 in the $d^{th}$ document. Then, the generative mechanism for the observed data
@@ -151,7 +152,7 @@ x_{d\cdot} \vert \left(\beta_{k}\right)_{1}^{K} &\overset{iid}{\sim} \Mult\left(
 \beta_{k} &\overset{iid}{\sim} \Dir\left(\gamma\right) \text{ for }k = 1, \dots, K, \nonumber
 \end{align}
 where we have introduced the $V \times K$ matrix concatenating all topics
-column-wise, $B = \begin{pmatrix}\beta_{1}, \dots, \beta_{K}\end{pmatrix}$. This
+column-wise, $B = \begin{pmatrix}\beta_{1}\vert \dots\vert \beta_{K}\end{pmatrix}$. This
 process is illustrated in Figure \ref{fig:lda_drawing_annotated}. Geometrically,
 LDA identifies samples with points in the convex hull of $K$ topics
 $\left(\beta_{k}\right)$ on the $V$-dimensional simplex, rather than the
@@ -179,12 +180,11 @@ individual corners, as in the Dirichlet multinomial mixture model.
 \subsection{Dynamic Unigram model}
 
 Upon examining this geometric interpretation, we might consider in some
-situations a model that identifies samples with a continuous curve on this
-$V$-dimensional simplex. This reasoning leads naturally to the Dynamic
-Unigram model \citep{blei2006dynamic}. The underlying curve reflects the gradual evolution
-of probabilities over time, and is implemented by passing a random walk through
-a multilogit link. That is, the Dynamic Unigram model posits the generative
-model
+situations a model that identifies samples with a continuous curve on
+$\simplex^{V - 1}$. This reasoning leads naturally to the Dynamic Unigram model
+\citep{blei2006dynamic}. The underlying curve reflects the gradual evolution of
+probabilities over time, and is implemented by passing a random walk through a
+multilogit link. That is, the Dynamic Unigram model posits the generative model
 \begin{align}
 x_{d\cdot} \vert \mu_{t\left(d\right)}  &\overset{iid}{\sim} \Mult\left(N_{d}, S\left(\mu_{t\left(d\right)}\right)\right) \text{ for } d = 1, \dots, D \label{eq:unigram_generative} \\
 \mu_{t} \vert \mu_{t - 1} &\overset{iid}{\sim} \Gsn\left(\mu_{t - 1}, \sigma^{2}I_{V}\right) \text{ for } t = 1, \dots, T \nonumber \\
@@ -195,7 +195,7 @@ where $S$ is the multilogit link
 \left[S\left(\mu\right)\right]_{v} = \frac{\exp{\mu_{v}}}{\sum_{v^{\prime}} \exp{\mu_{v^{\prime}}}},
 \end{align*}
 and $t\left(d\right)$ maps document $d$ to the time it was sampled. The
-$\left(\mu_{t\left(\right)}\right)$ define a Gaussian random walk in
+$\left(\mu_{t}\right)$ define a Gaussian random walk in
 $\reals^{V}$ with step-size $\sigma$, and $S$ transforms the walk into a
 sequence of probability distributions. In our experiments, we place a vague
 inverse-gamma prior on $\sigma^{2}$, since this hyperparameter is rarely known
@@ -207,7 +207,7 @@ in practice.
   \caption{A representation of the dynamic unigram model. The plate diagram
     corresponds to the model in equation \ref{eq:unigram_generative}. The random
     walk $\mu_{t}$ is drawn at the bottom, and its transformation into $x_{t}$,
-    which lies on the $V - 1$ dimensional simplex, the black curve at the top.
+    which lies on the $V$ dimensional simplex, the black curve at the top.
     Green points mark observed word frequences across documents over
     time. \label{fig:unigram_plate_annotated}}
 \end{figure}
@@ -228,7 +228,7 @@ of low rank matrices, $X \approx \Theta B^{T}$, where now the only constraints
 on $\Theta$ and $B$ are that $\Theta \in \reals_{+}^{D \times K}$ and $B \in
 \reals_{+}^{V \times K}$. This is the point of departure for a variety of algorithms
 in the Nonnegative Matrix Factorization (NMF) literature
-\citep{wang2013nonnegative}
+\citep{wang2013nonnegative}.
 
 We focus on the Gamma-Poisson factorization model (GaP) \citep{canny2004gap}
 which posits the hierarchical model
@@ -239,7 +239,7 @@ which posits the hierarchical model
 \end{align}
 where our notation means that each entry in these matrices is sampled
 independently, with parameters given by the corresponding entry in the parameter
-matrix. As a consequence of the representation of the negative binomial
+matrix. As a consequence of the representation of the Negative Binomial
 distribution as a Gamma mixture of Poissons, this is a natural model of
 overdispersed counts, which arise frequently in genomic and microbiome settings.
 In practice, the hyperparameters $a_{0}, b_{0}, c_{0}$, and $d_{0}$ are unknown.
@@ -253,10 +253,13 @@ these parameters.
   \caption{A visual description of the GaP model. The plate diagram corresponds
     to equation \ref{eq:nmf_generative}. The vectors for $\theta_i$ and
     $\beta_v$ both live in a $K$-dimensional
-    space -- they capture the influence of each topic in the $i^th$ document and
+    space -- they capture the influence of each topic in the $i^{th}$ document and
     $v^{th}$ word, respectively. The angle between and length of these vectors
     determines the expected count of term $v$ in document
     $i$, since $a^T b = \|a\|\|b\| \cos\left(\text{angle}\left(a, b\right)\right)$.
+    This geometric view lies behind more sophisticated versions of NMF as well,
+    for instance, the nonparametric factorization approach of
+    \citep{ren2017bayesian}.
     \label{fig:nmf_plate_annotated} }
 \end{figure}
 
@@ -264,23 +267,23 @@ In our simulation studies, we also consider a slight variant of this model,
 similar to the proposal of \citep{romero2014composition}, which independently
 sends entries of $X$ to zero with probability $p_{0}$. In our experiments, we
 assume that this zero-inflation probability is known. This procedure is denoted
-by Z-NMF. Throughout, we use the probabilsitic programming language STAN
+by Z-NMF. Throughout, we use the probabilistic programming language Stan
 \citep{carpenter2016stan}.
 
 \subsection{Posterior Predictive Checks}
 \label{sec:ppc_overview}
 
-Model assessment is important for qualifying interpretations, and can further
-guide refinements in subsequent analyses. Indeed, part of the appeal of
-probabilistic modeling is the ease with which models can be adapted to better
-describe the data of interest. We briefly review model assessment via posterior
-predictive checks, as they are applied in Section \ref{sec:antibiotics_ppc}. In
-this approach, some statistics $T_{k}\left(x\right)$ of the data are defined
-which, in some sense, ``characterize'' the data. If the data $x^{\ast}$
-simulated from the fitted model have statistics $T_{k}\left(x^{\ast}\right)$
-with values similar to those in the observed data $T_{k}\left(x\right)$, then we
-have evidence that the proposed model approximates the data well, at least in
-the sense defined by $T_{k}$.
+Model assessment is important for qualifying interpretations, and can guide
+refinements in subsequent analyses. Indeed, part of the appeal of probabilistic
+modeling is the ease with which models can be adapted to better describe the
+data of interest. We briefly review model assessment via posterior predictive
+checks, as they are applied in Section \ref{sec:antibiotics_ppc}. In this
+approach, some statistics $T_{k}\left(x\right)$ of the data are defined which,
+in some sense, ``characterize'' the data. If the data $x^{\ast}$ simulated from
+the fitted model have statistics $T_{k}\left(x^{\ast}\right)$ with values
+similar to those in the observed data $T_{k}\left(x\right)$, then we have
+evidence that the proposed model approximates the data well, at least in the
+sense defined by $T_{k}$.
 
 More precisely, simulate data $x_{1}^{\ast}, \dots, x_{S}^{\ast}$ from the
 posterior predictive probability distribution $p\left(x^{\ast}\vert x\right)
@@ -573,8 +576,8 @@ simulation parameters.
 
 Evidently, MCMC provides accurate posterior estimates, while VB and the
 bootstrap estimates deviate from the true $\mu_{tv}$. First, when the true
-$\mu_{tv}$ is small small, the posterior estimates from VB and the bootstrap are
-too large. This is not as much a reason for concern as it might appear at first,
+$\mu_{tv}$ is small, the posterior estimates from VB and the bootstrap are too
+large. This is not as much a reason for concern as it might appear at first,
 however, as the parameters $\mu_t$ are passed through a softmax before being
 mapped to probabilities. After this transformation, the difference between, say,
 $\mu_{tv} = 10^{-2}$ and $\mu_{tv} = 10^{-5}$ is relatively unimportant. Second,
@@ -646,7 +649,7 @@ study using GaP and Z-GaP is omitted, in light of the difficulties in estimation
 during the simulation studies. Throughout, we apply VB, though considering the
 results of the simulation study, we exercise caution when interpreting estimated
 uncertainties. We set $K = 4$, based on the heuristic that a larger $K$ would be
-less meaningful, since there are only 56 timepoints. In cases where it is of
+less meaningful, since there are only 54 timepoints. In cases where it is of
 interest to choose $K$ automatically, it would be possible to evaluate the
 likelihood of fitted models on a hold-out set, for a range of values of $K$, by
 fixing $\left(\hat{\beta}_{k}\right)_{k = 1}^{K}$ and estimating new
@@ -663,13 +666,13 @@ over the entire population.
 Note that we plot the fitted probabilities on a logit scale -- for a raw vector
 of probabilities $\mathbf{p} = \left(p_{1}, \dots, p_{D}\right) \in
 \simplex^{D - 1}$, we plot $g\left(\mathbf{p}\right) := \left(\log p_{1} -
-\overline{\log \mathbf{p}}, \dots, \log p_{K} - \overline{\log
+\overline{\log \mathbf{p}}, \dots, \log p_{D} - \overline{\log
   \mathbf{p}}\right)$, which are similar to log-odds, but centered according to
 the average log probability, rather than any reference class.
 
 Both LDA and the Dynamic Unigram model are more computationally intensive than
 more common approaches, like principal components analysis (PCA) or
-multidimensional scaling (MDS), but are still amenable to routine application.
+principal coordinates analysis (PCoA), but are still amenable to routine application.
 For example, in the case studies below, LDA and the Dynamic Unigram model can
 both be compiled and run on a standard laptop\footnote{1.4GHz Intel Core i5
   processor and 4GB RAM} in 5.62 and 30.0 minutes, respectively -- the longer
@@ -677,8 +680,7 @@ runtime of the Dynamic Unigram model is due to its larger number of parameters.
 Further, both approaches can be scaled to much larger datasets without requiring
 substantially more memory (but requiring somewhat longer training time) by
 applying stochastic variational inference \citep{hoffman2013stochastic}. For a
-comparison with the standard principal coordinates approach, see Section
-\ref{subsec:comparison_with_pcoa}.
+comparison with PCoA, see Section \ref{subsec:comparison_with_pcoa}.
 
 \subsection{Latent Dirichlet Allocation}
 \label{sec:antibiotics_lda}
@@ -720,7 +722,7 @@ Considering the mixture probabilities in Figure \ref{fig:antibiotics_lda_theta},
 those bacteria with large probabilities in the second and fourth rows of
 Supplementary Figure \ref{fig:antibiotics_lda_beta} constitute a large fraction
 of the samples taken during antibiotics time courses, reflecting those whose
-abundances increase rapidly (Topic 2) or are initially drop but then increase
+abundances increase rapidly (Topic 2) or initially drop but then increase
 gradually (Topic 4) during the antibiotics time courses. These distributions are
 relatively more concentrated on a small subset of bacteria with high
 probabilities, reflected by the drop in logitted probabilities far below zero.
@@ -750,16 +752,14 @@ species associated with a specific credible interval. It also hides any
 interesting variation that may be occurring among species not among the 750 most
 abundant. To address these issues, we have designed an interactive version,
 available online at
-%\url{https://statweb.stanford.edu/~kriss1/microbiome_plvm/vis.html}.
-(link blinded for review).
-Alternatively,
-individual species that are primarily assigned to individual topics can be used
-to characterize the topics. For example, in Figure \ref{fig:topic_prototypes} we
-have screened all species for those that seem primarily associated with a single
-topic, and plotted them along with the topic for they are representative.
-Specifically, representatives of the $k^{th}$ topic were found by choosing the
-50 species $v$ with the largest values of $\beta_{kv} - \sum_{k^{\prime} \neq k}
-\beta_{k^{\prime} v}$.
+\url{https://statweb.stanford.edu/~kriss1/microbiome_plvm/vis.html}.
+Alternatively, individual species that are primarily assigned to individual
+topics can be used to characterize the topics. For example, in Figure
+\ref{fig:topic_prototypes} we have screened all species for those that seem
+primarily associated with a single topic, and plotted them along with the topic
+for they are representative. Specifically, representatives of the $k^{th}$ topic
+were found by choosing the 50 species $v$ with the largest values of $\beta_{kv}
+- \sum_{k^{\prime} \neq k} \beta_{k^{\prime} v}$.
 
 \begin{figure}
   \centering\includegraphics[width=\textwidth]{figure/lvm/topic_prototypes}
@@ -826,7 +826,7 @@ to have recovered.
 Further, while we continue to see differential recovery across bacteria, the
 effect is not as obvious as in LDA, where this effect was decomposed across
 topics. For example, many subintervals of Lachnospiraceae seem to return to
-their pre-antibiotics levels by time 25, while the Ruminococceae continue to
+their pre-antibiotics levels by time 25, while the Ruminococcaceae continue to
 have low values of $\mu_{tv}$.
 
 \subsection{Comparison with principal coordinates}
@@ -853,10 +853,10 @@ would be necessary to find species correlated with the principal coordinate
 axes, and indeed no visual representations of taxa ever appear in the figures of
 \cite{dethlefsen2011incomplete}. Similarly, by studying individual topics, we
 find there is more variation within taxonomic families than is ever discussed in
-the original refernece. Further, through posterior predictive checks, we can
+the original reference. Further, through posterior predictive checks, we can
 perform model assessment in a way that is not so straightforwards with PCoA, and
 more broadly speaking, we by adopting probabilistic methods, we are able to
-describe the uncertainty associated with mixed membership and topic estimate.
+describe the uncertainty associated with mixed membership and topic estimates.
 
 That said, PCoA enjoys certain advantages over the probabilistic approaches that
 have been the focus of this work. Perhaps most importantly, PCoA can be run in
@@ -875,7 +875,7 @@ little effort in either estimation or display. However, for more richly
 structured summaries, which are amenable to uncertainty quantification and model
 evaluation, probabilistic methods are ideal. We imagine a workflow in which
 researchers quickly develop a sense of their data using ordination, and then
-refine and critique their analysis using latent variables models.
+refine and critique their analysis using latent variable models.
 
 \subsection{Posterior Predictive Checks}
 \label{sec:antibiotics_ppc}
@@ -982,7 +982,7 @@ approaches to microbiome data.
 Microbiome studies are a source of richly structured, high-dimensional data,
 coupled with novel scientific problem setups. For example, in the antibiotics
 data set described here, we have already encountered structure in the form of
-zero-inflated counts, time series with changepoints, and apriori known
+zero-inflated counts, time series with changepoints, and a priori known
 phylogenetic relationships between features. Future microbiome studies will
 likely collect an increasing number of samples as well as more data sources per
 sample -- metabolomic and genomic, in addition bacterial abundance, for example.
