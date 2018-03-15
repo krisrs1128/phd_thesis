@@ -3,7 +3,10 @@
 
 In this thesis, we have evaluated workflows, developed software, and distilled
 literature relevant to discovery and visualization of latent structure in the
-microbiome.
+microbiome. We have considered techniques from both formal modeling and
+exploratory data analysis, highlighting the ways in which these complementary
+points of view can both applied to the process of iterating towards more
+refined, compact representations of complex data.
 
 In Chapter \ref{ch:interactive_vis}, we developed a collection of packages that
 made use of data visualization concepts to ease pain-points in microbiome data
@@ -38,14 +41,12 @@ Chapter \ref{ch:multitable} reviews the problem of relating several tables to
 one another, motivated by an application to a study comparing body fat
 composition to bacterial species abundances, with interest in connections
 between the microbiome and host metabolism. If there were only one summary of
-body fat -- for example, BMI -- this is simply a high-dimensional regression
+body fat -- for example, BMI -- this would be simply a high-dimensional regression
 problem. However, this study provides fat and muscle mass measurements at
-various locations across the body, in order to provide a richer portrait of body
-fat composition than simply BMI. There are many proposals for studying such
+various locations across the body, providing a richer portrait of body
+fat composition than given by a simple BMI. There are many proposals for studying such
 multitable data, developed across various literatures, including statistics,
-ecology, and machine learning, for example. This chapter provides a unified
-review, along with applications to the body composition data, with the overall
-goals of comparison and distillation.
+ecology, and machine learning, for example.
 
 In Chapter \ref{ch:dynamic_regimes}, we formulate the regime detection problem
 in the context of microbiome studies and review associated methods. The problem
@@ -92,6 +93,17 @@ could lead to useful hybrid algorithms. For example, it is sometimes necessary
 to perform regime detection in multitable data, or to consider DTM-style
 zero-inflation across clustered time series.
 
-We expect that the foundation laid out by this thesis will be relevant to the
-creation and evaluation of methods related to data visualization and latent
-variable modeling, as these fields continue to develop.
+More fundamentally, this thesis has adopted the perspective that the
+computational comparison of existing methods, through simulations or
+illustrations, is often as valuable to data analysts as the development of novel
+algorithms. Indeed, we hope these examples can guide the choices faced by
+practitioners in their day-to-day work. In this way, we emulate classical
+statistical theory, giving modern analogs to classical comparison of
+experiments. Clearly, much work remains to be done, and the proliferation of
+algorithms is both a blessing and a curse: while there are more options
+available, some possibly tailor-made to problems of interest, there are few
+objective guidelines available to inform the actual decision of which to apply,
+and there is very little sense of when one approach is optimal. We hope that the
+foundation laid out by this thesis will be relevant to the creation and
+evaluation of methods related to data visualization and latent variable modeling
+in work to come.
